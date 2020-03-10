@@ -1,0 +1,36 @@
+
+ @import "~bootstrap/scss/bootstrap";
+ @import 'shikwa/variables';
+ @import 'shikwa/mixins';
+
+ // Plugins CSS
+ @import "shikwa/plugins/plugin-animate-bootstrap-notify";
+ @import "shikwa/plugins/plugin-perfect-scrollbar";
+
+ // Core CSS
+ @import "shikwa/buttons";
+ @import "shikwa/inputs";
+ @import "shikwa/typography";
+ @import "shikwa/misc";
+ @import "shikwa/checkboxes-radio";
+
+ // components
+ @import "shikwa/navbar";
+ @import "shikwa/page-header";
+ @import "shikwa/dropdown";
+ @import "shikwa/alerts";
+ @import "shikwa/images";
+ @import "shikwa/nucleo-outline";
+ @import "shikwa/tables";
+ @import "shikwa/sidebar-and-main-panel";
+ @import "shikwa/footers";
+ @import "shikwa/fixed-plugin";
+
+ // cards
+ @import "shikwa/cards";
+ @import "shikwa/cards/card-plain";
+ @import "shikwa/cards/card-chart";
+ @import "shikwa/cards/card-user";
+ @import "shikwa/cards/card-map";
+
+ @import "shikwa/responsive";

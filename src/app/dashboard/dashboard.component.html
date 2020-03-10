@@ -1,0 +1,12 @@
+<div class="panel-header panel-header-sm">
+</div>
+
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <dropzone class="dropzone-container" [config]="config" [disabled]="disabled" fxLayout="row"
+        fxLayoutAlign="start strech" fxFlex="auto" [message]="'Click or drag images here to upload'"
+        (init)="onUploadInit($event)" (error)="onUploadError($event)" (success)="onUploadSuccess($event)"></dropzone>
+    </div>
+  </div>
+</div>

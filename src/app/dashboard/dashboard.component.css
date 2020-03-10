@@ -1,0 +1,13 @@
+.dropzone-container {
+  min-height: 30rem !important;
+  max-height: 40rem !important;
+}
+
+.action-button:hover {
+  color: #fff;
+  background-color: #555;
+}
+
+.dz-message {
+  background: white !important;
+}
