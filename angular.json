@@ -26,7 +26,8 @@
               "src/assets/scss/shikwa.scss"
             ],
             "scripts": [
-              "node_modules/chart.js/dist/Chart.min.js"
+              "node_modules/chart.js/dist/Chart.min.js",
+              "node_modules/hammerjs/hammer.min.js"
             ]
           },
           "configurations": {

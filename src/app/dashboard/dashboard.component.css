@@ -1,3 +1,7 @@
+:root {
+  --cropper-outline-color: red;
+}
+
 .dropzone-container {
   min-height: 30rem !important;
   max-height: 40rem !important;
@@ -10,4 +14,17 @@
 
 .dz-message {
   background: white !important;
+}
+
+image-cropper {
+  max-height: 75vh;
+}
+
+.btn-dark {
+  background-color: #343a40;
+  border-color: #343a40;
+}
+
+.details{
+  margin-bottom: 0;
 }
