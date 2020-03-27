@@ -14,13 +14,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 import { DashboardComponent } from '../../dashboard/dashboard.component'
 import { DropzoneModule, DropzoneConfigInterface, DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
-
-const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
-  url: 'https://httpbin.org/post',
-  acceptedFiles: 'image/*',
-  createImageThumbnails: true
-};
-
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { DashboardModule } from '../../dashboard/dashboard.module';
 
 @NgModule({
   imports: [
@@ -29,23 +24,18 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     FormsModule,
     ChartsModule,
     NgbModule,
+    DashboardModule,
     DropzoneModule,
+    ImageCropperModule,
     ToastrModule.forRoot()
   ],
   declarations: [
-    DashboardComponent,
     ProfileComponent,
     SubmitReport,
     MyReports,
     Reports,
     LocationComponent,
     NotificationsComponent,
-  ],
-  providers: [
-    {
-      provide: DROPZONE_CONFIG,
-      useValue: DEFAULT_DROPZONE_CONFIG
-    }
   ]
 })
 
