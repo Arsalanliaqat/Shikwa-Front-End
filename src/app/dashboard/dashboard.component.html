@@ -4,9 +4,133 @@
 <div class="main-content">
   <div class="row">
     <div class="col-md-12">
-      <dropzone class="dropzone-container" [config]="config" [disabled]="disabled" fxLayout="row"
-        fxLayoutAlign="start strech" fxFlex="auto" [message]="'Click or drag images here to upload'"
-        (init)="onUploadInit($event)" (error)="onUploadError($event)" (success)="onUploadSuccess($event)"></dropzone>
+
+      <div *ngIf="!this.selectedImage">
+        <dropzone class="dropzone-container" [config]="config" [disabled]="disabled" fxLayout="row"
+          fxLayoutAlign="start strech" fxFlex="auto" [message]="'Click or drag images here to upload'"
+          (init)="onUploadInit($event)" (error)="onUploadError($event)" (success)="onUploadSuccess($event)"></dropzone>
+      </div>
+
+      <div *ngIf="this.selectedImage">
+
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-success" (click)="scan()">Scan</button>
+          <button class="btn btn-dark" (click)="rotateLeft()">Rotate left</button>
+          <button class="btn btn-dark" (click)="rotateRight()">Rotate right</button>
+          <button class="btn btn-dark" (click)="flipHorizontal()">Flip horizontal</button>
+          <button class="btn btn-dark" (click)="flipVertical()">Flip vertical</button>
+          <button class="btn btn-dark" (click)="zoomOut()">Zoom -</button>
+          <button class="btn btn-dark" (click)="zoomIn()">Zoom +</button>
+          <button class="btn btn-danger" (click)="resetImage()">Reset image</button>
+          <button class="btn btn-danger" (click)="cancel()">Cancel</button>
+        </div>
+
+        <image-cropper [imageFile]="selectedImage" [maintainAspectRatio]="false" [transform]="transform"
+          [canvasRotation]="canvasRotation" [imageQuality]="100" format="png" (imageCropped)="imageCropped($event)">
+        </image-cropper>
+
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-center">
+      <p>OR</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-center">
+      <button class="btn btn-lg btn-danger" (click)="open(content)">Search Manually</button>
+      <!-- <button class="btn btn-lg btn-danger" (click)="this.valid=true;open(result)">Test Valid Result</button>
+      <button class="btn btn-lg btn-danger" (click)="this.valid=false;open(result)">Test InValid Result</button> -->
     </div>
   </div>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-search">Verify Product</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label>Product Brand</label>
+        <input type="text" class="form-control" value="{{brand}}" placeholder="i.e. Sony">
+      </div>
+      <div class="form-group">
+        <label>Product Category</label>
+        <input type="text" class="form-control" value="{{category}}" placeholder="i.e. Multimedia">
+      </div>
+      <div class="form-group">
+        <label>Product Product</label>
+        <input type="text" class="form-control" value="{{product}}" placeholder="i.e. LED TV">
+      </div>
+      <div class="form-group">
+        <label>Product Model</label>
+        <input type="text" class="form-control" value="{{model}}" placeholder="i.e. XBR-49X855B">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Search')">Search</button>
+  </div>
+</ng-template>
+
+<ng-template #result let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-result">Result</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="this.valid">
+      <div class="row d-flex justify-content-center">
+        <i class="fas fa-check-circle fa-4x" style="color:green"></i> <br />
+      </div>
+      <div class="row d-flex justify-content-center mt-2">
+        <p style="color:green">Valid</p>
+      </div>
+      <div class="row d-flex justify-content-center mt-2">
+        <p class="details"><span style="font-weight: bold;">Brand</span>: {{brand}}</p>
+      </div>
+      <div class="row d-flex justify-content-center">
+        <p class="details"><span style="font-weight: bold;">Category:</span> {{category}}</p>
+      </div>
+      <div class="row d-flex justify-content-center">
+        <p class="details"><span style="font-weight: bold;">Product:</span> {{product}}</p>
+      </div>
+      <div class="row d-flex justify-content-center">
+        <p class="details"><span style="font-weight: bold;">Model:</span> {{model}}</p>
+      </div>
+    </div>
+    <div *ngIf="!this.valid">
+      <div class="row d-flex justify-content-center">
+        <i class="fas fa-check-circle fa-4x" style="color:red"></i> <br />
+      </div>
+      <div class="row d-flex justify-content-center mt-2">
+        <p style="color:red">Invalid</p>
+      </div>
+      <div class="row d-flex justify-content-center mt-2">
+        <p class="details"><span style="font-weight: bold;">Brand</span>: {{brand}}</p>
+      </div>
+      <div class="row d-flex justify-content-center">
+        <p class="details"><span style="font-weight: bold;">Category:</span> {{category}}</p>
+      </div>
+      <div class="row d-flex justify-content-center">
+        <p class="details"><span style="font-weight: bold;">Product:</span> {{product}}</p>
+      </div>
+      <div class="row d-flex justify-content-center">
+        <p class="details"><span style="font-weight: bold;">Model:</span> {{model}}</p>
+      </div>
+      <div class="row d-flex justify-content-center mt-2">
+        <button class="btn btn-danger">Report</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close')">Close</button>
+  </div>
+</ng-template>
