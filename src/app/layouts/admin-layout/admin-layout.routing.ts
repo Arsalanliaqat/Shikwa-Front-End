@@ -6,13 +6,14 @@ import { Reports } from '../../reports/reports.component';
 import { LocationComponent } from '../../location/location.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { DashboardComponent } from '../../dashboard/dashboard.component'
+import { AuthGuard } from '../../auth/guards/auth.guard';
 
 export const AdminLayoutRoutes: Routes = [
-    { path: 'dashboard', component: DashboardComponent },
-    { path: 'profile', component: ProfileComponent },
-    { path: 'submit-reports', component: SubmitReport },
-    { path: 'my-reports', component: MyReports },
-    { path: 'reports', component: Reports },
-    { path: 'location', component: LocationComponent },
-    { path: 'notifications', component: NotificationsComponent },
+    { path: 'dashboard', component: DashboardComponent, canActivate : [AuthGuard] },
+    { path: 'profile', component: ProfileComponent, canActivate : [AuthGuard]  },
+    { path: 'submit-reports', component: SubmitReport, canActivate : [AuthGuard]  },
+    { path: 'my-reports', component: MyReports, canActivate : [AuthGuard]  },
+    { path: 'reports', component: Reports, canActivate : [AuthGuard]  },
+    { path: 'location', component: LocationComponent, canActivate : [AuthGuard]  },
+    { path: 'notifications', component: NotificationsComponent, canActivate : [AuthGuard]  },
 ]   

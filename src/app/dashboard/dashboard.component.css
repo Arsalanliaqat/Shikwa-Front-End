@@ -17,7 +17,7 @@
 }
 
 image-cropper {
-  max-height: 75vh;
+  max-height: 60vh;
 }
 
 .btn-dark {
@@ -25,6 +25,41 @@ image-cropper {
   border-color: #343a40;
 }
 
-.details{
+.details {
   margin-bottom: 0;
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 8px solid red;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  vertical-align: middle;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader-view {
+  min-height: 530px !important;
+  text-align: center;
 }

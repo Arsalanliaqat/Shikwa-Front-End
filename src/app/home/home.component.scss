@@ -7,10 +7,29 @@
 }
 
 .login-with-google {
-  background-color: #4c8bf5;
+  background-color: #db4a39;
   color: white;
   border-radius: 0;
   border: 0px;
+}
+
+.login-with-facebook {
+  background-color: #3b5998;
+  color: white;
+  border-radius: 0;
+  border: 0px;
+}
+
+.square-buttons {
+  border-radius: 0 !important;
+  background: red !important;
+  color: white !important;
+  border: 0 !important;
+  padding: 6px 12px !important;
+}
+
+.form-control {
+  border-radius: 0 !important;
 }
 
 .user_card {

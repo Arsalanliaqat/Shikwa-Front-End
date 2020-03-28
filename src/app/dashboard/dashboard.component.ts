@@ -2,7 +2,7 @@ import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { createWorker } from 'tesseract.js';
 import { ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 const Jimp = require('jimp');
 
 @Component({
@@ -17,6 +17,7 @@ export class DashboardComponent {
   @ViewChild('content', { read: TemplateRef }) content: TemplateRef<any>;
   @ViewChild('result', { read: TemplateRef }) result: TemplateRef<any>;
 
+  public modalReference: NgbModalRef;
   public closeResult = '';
   public selectedImage: File = null;
   public croppedImage: any = '';
@@ -31,6 +32,7 @@ export class DashboardComponent {
   public product = 'LED TV';
   public model = 'XBR-49X855B';
   public valid = true;
+  public show = 'loading';
   public config: DropzoneConfigInterface = {
     clickable: true,
     maxFiles: 1,
@@ -65,10 +67,10 @@ export class DashboardComponent {
   }
 
   public open(content) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-search' }).result.then((result) => {
+    this.modalReference = this.modalService.open(content);
+    this.modalReference.result.then((result) => {
     }, (reason) => {
-      if (this.getDismissReason(reason) === 'Search') {
-
+      if ((this.getDismissReason(reason) === 'backdrop') || (this.getDismissReason(reason) === 'ESC')) {
       }
     });
   }
@@ -129,6 +131,7 @@ export class DashboardComponent {
   }
 
   public async scan() {
+    this.show = 'loading';
     await this.processImage();
     this.runOCR(this.croppedImage);
     this.modalService.open(this.content);
@@ -165,7 +168,16 @@ export class DashboardComponent {
     await worker.initialize('eng+deu');
     console.log('OCR Applying');
     const { data: { text } } = await worker.recognize(image);
+    this.brand = 'Sony Inter-American S.A';
+    this.category = 'Multimedia';
+    this.product = 'LED TV';
+    this.model = 'XBR-49X855B';
+    this.show = 'manual';
     console.log(text);
     await worker.terminate();
+  }
+
+  public report() {
+    console.log('report');
   }
 }

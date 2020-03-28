@@ -1,0 +1,10 @@
+{
+    "/api/*": {
+        "target": "https://reqbin.com",
+        "secure": false,
+        "loglevel": "debug",
+        "pathRewrite": {
+            "^/api": ""
+        }
+    }
+}
