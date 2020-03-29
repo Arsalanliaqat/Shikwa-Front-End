@@ -85,15 +85,15 @@ export class HomeComponent {
         this.passwordRepeatError = null;
 
         let regObject = {
-          name: this.userPhone,
-          password: this.userPassword,
-          firstname: this.firstName,
-          lastname: this.lastName,
-          useremail: this.userEmail,
-          useraddress: this.userStreet,
-          usercity: this.userCity,
-          userZipCode: this.userZip,
-          userCountry: this.userCountry
+          phone_number: this.userPhone,
+          Password: this.userPassword,
+          First_Name: this.firstName,
+          Last_Name: this.lastName,
+          Email: this.userEmail,
+          Street: this.userStreet,
+          City: this.userCity,
+          Zip: this.userZip,
+          Country: this.userCountry
         };
         console.log(JSON.stringify(regObject));
       }

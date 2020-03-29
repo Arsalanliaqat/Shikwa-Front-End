@@ -176,7 +176,9 @@
                 onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : ''); if(this.checkValidity()) form.passwordRepeat.pattern = String(this.value).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');"
               />
               <span class="validity"></span>
+              
             </div>
+           
             <div class="input-group mb-2">
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -192,6 +194,7 @@
                 title="match value"
                 onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : '');"
               />
+              
               <span class="validity"></span>
             </div>
             <span *ngIf="passwordRepeatError" class="Error"
