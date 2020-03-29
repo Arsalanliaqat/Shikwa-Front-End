@@ -95,7 +95,9 @@ export class HomeComponent {
           Zip: this.userZip,
           Country: this.userCountry
         };
+        form.resetForm();
         console.log(JSON.stringify(regObject));
+
       }
     }
   }
