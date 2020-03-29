@@ -8,24 +8,30 @@
           <h5 class="title">Edit Profile</h5>
         </div>
         <div class="card-body">
-          <form>
+          <form #f="ngForm" (ngSubmit)="onSubmit(f)">
             <div class="row">
               <div class="col-md-4 pr-md-1">
                 <div class="form-group">
                   <label>Salutation</label>
-                  <input type="text" class="form-control" placeholder="Salutation" value="Mr.">
+                  <select class="form-control" name="salutation" [(ngModel)]="salutation">
+                    <option [selected]="salutation === ''" value="">Select Salutation</option>
+                    <option [selected]="salutation === 'male'" value="male">Mr.</option>
+                    <option [selected]="salutation === 'female'" value="female">Ms. / Mrs.</option>
+                  </select>
                 </div>
               </div>
               <div class="col-md-4 px-md-1">
                 <div class="form-group">
                   <label>First Name</label>
-                  <input type="text" class="form-control" placeholder="First Name" value="Arslan">
+                  <input type="text" class="form-control" placeholder="First Name" name="firstname"
+                    [(ngModel)]="firstname">
                 </div>
               </div>
               <div class="col-md-4 pl-md-1">
                 <div class="form-group">
                   <label>Last Name</label>
-                  <input type="text" class="form-control" placeholder="Last Name" value="Liaqat">
+                  <input type="text" class="form-control" placeholder="Last Name" name="lastname"
+                    [(ngModel)]="lastname">
                 </div>
               </div>
             </div>
@@ -33,13 +39,14 @@
               <div class="col-md-6 pr-md-1">
                 <div class="form-group">
                   <label>Username</label>
-                  <input type="text" class="form-control" placeholder="Username" value="arslan123">
+                  <input type="text" class="form-control" placeholder="Username" name="username" [(ngModel)]="username">
                 </div>
               </div>
               <div class="col-md-6 pl-md-1">
                 <div class="form-group">
                   <label for="email">Email address</label>
-                  <input name="email" id="email" type="email" class="form-control" placeholder="Email" value="arslan@pentastreams.com">
+                  <input name="email" id="email" type="email" class="form-control" placeholder="Email" name="email"
+                    [(ngModel)]="email">
                 </div>
               </div>
             </div>
@@ -47,13 +54,13 @@
               <div class="col-md-6 pr-md-1">
                 <div class="form-group">
                   <label>Phone</label>
-                  <input type="text" class="form-control" placeholder="Phone" value="0111 2223334">
+                  <input type="text" class="form-control" placeholder="Phone" name="phone" [(ngModel)]="phone">
                 </div>
               </div>
               <div class="col-md-6 pl-md-1">
                 <div class="form-group">
                   <label for="email">Landline</label>
-                  <input type="text" class="form-control" placeholder="Landline" value="0555 6667778">
+                  <input type="text" class="form-control" placeholder="Landline" name="landline" [(ngModel)]="landline">
                 </div>
               </div>
             </div>
@@ -61,7 +68,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Address</label>
-                  <input type="text" class="form-control" placeholder="Home Address" value="Reichenhainer Str. 37 / 063">
+                  <input type="text" class="form-control" placeholder="Home Address" name="street" [(ngModel)]="street">
                 </div>
               </div>
             </div>
@@ -69,19 +76,19 @@
               <div class="col-md-4 pr-md-1">
                 <div class="form-group">
                   <label>City</label>
-                  <input type="text" class="form-control" placeholder="City" value="Chemnitz">
+                  <input type="text" class="form-control" placeholder="City" name="city" [(ngModel)]="city">
                 </div>
               </div>
               <div class="col-md-4 px-md-1">
                 <div class="form-group">
                   <label>Country</label>
-                  <input type="text" class="form-control" placeholder="Country" value="Germany">
+                  <input type="text" class="form-control" placeholder="Country" name="country" [(ngModel)]="country">
                 </div>
               </div>
               <div class="col-md-4 pl-md-1">
                 <div class="form-group">
                   <label>Postal Code</label>
-                  <input type="number" class="form-control" placeholder="Zip" value="09126">
+                  <input type="number" class="form-control" placeholder="Zip" name="zip" [(ngModel)]="zip">
                 </div>
               </div>
             </div>
@@ -89,7 +96,8 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>About Me</label>
-                  <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description" value="description">Software Developer, Front End Developer, Graphics and Web Designer</textarea>
+                  <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description"
+                    [(ngModel)]="description" name="description"></textarea>
                 </div>
               </div>
             </div>
@@ -111,18 +119,14 @@
         </div>
         <div class="card-body">
           <div class="author">
-            <a href="#">
-              <img class="avatar border-gray" src="../assets/img/arslan.jpg" alt="...">
-              <h5 class="title">Arslan Liaqat</h5>
-            </a>
+            <img class="avatar border-gray" src="../assets/img/avatar.png" alt="...">
+            <h5 class="title">{{firstname}} {{lastname}}</h5>
             <p class="description">
-              arslan123
+              {{username}}
             </p>
           </div>
           <p class="description text-center">
-            Software Developer<br>
-            Front end Developer<br>
-            Graphics and Web Designer
+            {{description}}
           </p>
         </div>
       </div>

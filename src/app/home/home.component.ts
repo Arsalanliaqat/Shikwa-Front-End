@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MyAuthService } from '../auth/auth.service';
@@ -12,18 +12,20 @@ import { SocialUser } from "angularx-social-login";
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   public isCollapsed = true;
   signinToggle = true;
 
   emailAddress: string;
   password: string;
   errorText: string;
+  redirectToSubmitReport = false;
 
   private user: SocialUser;
   private loggedIn: boolean;
 
   modalReference: NgbModalRef;
+  @ViewChild('signin', { read: TemplateRef }) signinModal: TemplateRef<any>;
 
   constructor(
     private router: Router,
@@ -67,11 +69,18 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  loginAndReport(value: boolean) {
+    if (value) {
+      this.redirectToSubmitReport = value;
+      this.modalService.open(this.signinModal, { centered: true });
+    }
+  }
+
   ngOnInit() {
     this.authService.authState.subscribe((user) => {
       this.user = user;
       this.loggedIn = (user != null);
-      if(this.modalReference) {
+      if (this.modalReference) {
         this.modalReference.close();
       }
       if (this.loggedIn) {
@@ -92,7 +101,14 @@ export class HomeComponent implements OnInit {
   signInHandler(loginMethod: String) {
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('loginWith', `${loginMethod}`);
-    void this.router.navigate(['dashboard']);
+    if (this.redirectToSubmitReport) {
+      if (this.modalReference) {
+        this.modalReference.close();
+      }
+      void this.router.navigate(['submit-reports']);
+    } else {
+      void this.router.navigate(['dashboard']);
+    }
   }
 
   signInWithGoogle(): void {
@@ -110,26 +126,16 @@ export class HomeComponent implements OnInit {
   async onSubmit(action: string) {
     if (action === 'login') {
       this.signin();
-      try {
-        const result = await this.myAuthService.login(this.emailAddress, this.password);
-        this.modalReference.close();
-        console.log(result);
-        localStorage.setItem('token', result.token);
-        this.signInHandler('Email');
-      } catch (err) {
-        if (err instanceof HttpErrorResponse) {
-          console.log(err);
-          if (err.status === 401) {
-            this.errorText = 'Email or password is wrong.';
-            console.log(this.errorText);
-          } else {
-            this.errorText = `Encountered error (status ${err.status})`;
-            console.log(this.errorText);
-          }
-        } else {
-          this.errorText = 'Encountered unexpected error';
-          console.log(this.errorText);
+      const result = await this.myAuthService.login(this.emailAddress, this.password);
+      if (result.type === 'OK') {
+        if(this.modalReference) {
+          this.modalReference.close();
         }
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('userId', result.userId);
+        this.signInHandler('Email');
+      } else if (result.type === 'ERROR') {
+        this.errorText = result.msg;
       }
     }
   }
@@ -144,5 +150,9 @@ export class HomeComponent implements OnInit {
 
   public cancel() {
     this.signinToggle = true;
+  }
+
+  ngOnDestroy() {
+    this.modalService.dismissAll();
   }
 }

@@ -63,3 +63,18 @@ image-cropper {
   min-height: 530px !important;
   text-align: center;
 }
+
+.img-thumbnail {
+  border: none !important;
+  max-height: 180px;
+}
+
+.border {
+  border: 4px solid #dee2e6 !important;
+  margin: 10px 0px;
+  padding: 20px;
+}
+
+.modal-title{
+  margin-top: 10px;
+}

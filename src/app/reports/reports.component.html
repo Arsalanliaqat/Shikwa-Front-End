@@ -17,47 +17,13 @@
                 <th>Details</th>
               </thead>
               <tbody>
-                <tr>
-                  <td class="text-center">1</td>
-                  <td>Sony Corporation</td>
-                  <td>Playstation 5 Pro</td>
-                  <td><a href="#">View Details</a></td>
-                </tr>
-                <tr>
-                  <td class="text-center">2</td>
-                  <td>Sony Corporation</td>
-                  <td>Playstation 5 Pro</td>
-                  <td><a href="#">View Details</a></td>
-                </tr>
-                <tr>
-                  <td class="text-center">3</td>
-                  <td>Sony Corporation</td>
-                  <td>Playstation 5 Pro</td>
-                  <td><a href="#">View Details</a></td>
-                </tr>
-                <tr>
-                  <td class="text-center">4</td>
-                  <td>Sony Corporation</td>
-                  <td>Playstation 5 Pro</td>
-                  <td><a href="#">View Details</a></td>
-                </tr>
-                <tr>
-                  <td class="text-center">5</td>
-                  <td>Sony Corporation</td>
-                  <td>Playstation 5 Pro</td>
-                  <td><a href="#">View Details</a></td>
-                </tr>
-                <tr>
-                  <td class="text-center">6</td>
-                  <td>Sony Corporation</td>
-                  <td>Playstation 5 Pro</td>
-                  <td><a href="#">View Details</a></td>
-                </tr>
-                <tr>
-                  <td class="text-center">7</td>
-                  <td>Sony Corporation</td>
-                  <td>Playstation 5 Pro</td>
-                  <td><a href="#">View Details</a></td>
+                <tr *ngFor="let product of products; let i=index">
+                  <td class="tabnum text-center">{{i+1}}</td>
+                  <td class="tabbrand">{{product.Product_Brand}}</td>
+                  <td class="tabname">{{product.Product_Name}}</td>
+                  <td class="tablink"><a class="btn btn-danger" style="color:white" (click)="open(content,product)">View
+                      Details </a>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -67,3 +33,48 @@
     </div>
   </div>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-body">
+    <img src={{detailsObject.Image_Path}} class="img-thumbnail" alt="Product image">
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <td class="cell-data left">Product Id</td>
+          <td class="cell-data">{{detailsObject.Id}}</td>
+        </tr>
+        <tr>
+          <td class="cell-data left">Product Brand</td>
+          <td class="cell-data">{{detailsObject.Product_Brand}}</td>
+        </tr>
+        <tr>
+          <td class="cell-data left">Product Category</td>
+          <td class="cell-data">{{detailsObject.Product_Category}}</td>
+        </tr>
+        <tr>
+          <td class="cell-data left">Country of Origin</td>
+          <td class="cell-data">{{detailsObject.Country_Origin}}</td>
+        </tr>
+        <tr>
+          <td class="cell-data left">City of Origin</td>
+          <td class="cell-data">{{detailsObject.City_Origin}}</td>
+        </tr>
+        <tr>
+          <td class="cell-data left">Risk Type</td>
+          <td class="cell-data">{{detailsObject.Risk_Type}}</td>
+        </tr>
+        <tr>
+          <td class="cell-data left">Transaction Hash</td>
+          <td class="cell-data">{{detailsObject.transaction_hash}}</td>
+        </tr>
+        <tr>
+          <td class="cell-data left">Description</td>
+          <td class="cell-data">{{detailsObject.Description}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close')">Close</button>
+  </div> -->
+</ng-template>

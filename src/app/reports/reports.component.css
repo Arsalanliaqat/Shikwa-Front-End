@@ -1,3 +1,45 @@
 .table-responsive {
-    overflow: auto !important; 
+  overflow: auto !important;
+}
+
+.modal-body {
+  padding: 0;
+  text-align: center;
+}
+
+.table {
+  margin: 0;
+  border: 5px solid white;
+  border-top: 0;
+}
+
+.cell-data {
+  padding-left: 15px !important;
+}
+
+.left {
+  background-color: black !important;
+  color: white;
+  width: 25%;
+}
+
+.img-thumbnail {
+  max-height: 500px !important;
+  border: 0;
+}
+
+.tabnum {
+  width: 15%;
+}
+
+.tabbrand {
+  width: 30%;
+}
+
+.tabname {
+  width: 30%;
+}
+
+.tablink {
+  width: 15%;
 }
