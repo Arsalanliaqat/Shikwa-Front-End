@@ -12,8 +12,7 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import { ChartsModule } from 'ng2-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
-import { DashboardComponent } from '../../dashboard/dashboard.component'
-import { DropzoneModule, DropzoneConfigInterface, DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
+import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { DashboardModule } from '../../dashboard/dashboard.module';
 
@@ -24,8 +23,8 @@ import { DashboardModule } from '../../dashboard/dashboard.module';
     FormsModule,
     ChartsModule,
     NgbModule,
-    DashboardModule,
     DropzoneModule,
+    DashboardModule,
     ImageCropperModule,
     ToastrModule.forRoot()
   ],

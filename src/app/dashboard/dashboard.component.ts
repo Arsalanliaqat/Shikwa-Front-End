@@ -1,8 +1,9 @@
-import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { Component, ViewChild, TemplateRef, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { createWorker } from 'tesseract.js';
 import { ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 const Jimp = require('jimp');
 
 @Component({
@@ -10,12 +11,49 @@ const Jimp = require('jimp');
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnDestroy {
+
+  mynewresponse = [
+    {
+      "brand": "Sony Inter-American S.A",
+      "category": "Multimedia",
+      "product": "LED TV",
+      "model": "XBR-49X855B",
+      "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
+      "valid": "valid"
+    },
+    {
+      "brand": "Sony Inter-American S.A",
+      "category": "Multimedia",
+      "product": "LED TV",
+      "model": "XBR-49X855B",
+      "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
+      "valid": "invalid"
+    },
+    {
+      "brand": "Sony Inter-American S.A",
+      "category": "Multimedia",
+      "product": "LED TV",
+      "model": "XBR-49X855B",
+      "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
+      "valid": "valid"
+    },
+    {
+      "brand": "Sony Inter-American S.A",
+      "category": "Multimedia",
+      "product": "LED TV",
+      "model": "XBR-49X855B",
+      "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
+      "valid": "invalid"
+    },
+  ]
+
   private rotation = 0;
   private scale = 1;
 
   @ViewChild('content', { read: TemplateRef }) content: TemplateRef<any>;
   @ViewChild('result', { read: TemplateRef }) result: TemplateRef<any>;
+  @Output() loginAndReport = new EventEmitter();
 
   public modalReference: NgbModalRef;
   public closeResult = '';
@@ -31,6 +69,7 @@ export class DashboardComponent {
   public category = 'Multimedia';
   public product = 'LED TV';
   public model = 'XBR-49X855B';
+  public Image_Path = 'https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg';
   public valid = true;
   public show = 'loading';
   public config: DropzoneConfigInterface = {
@@ -44,7 +83,10 @@ export class DashboardComponent {
     thumbnailWidth: 1500
   };
 
-  constructor(private modalService: NgbModal) { }
+  constructor(
+    private modalService: NgbModal,
+    private router: Router,
+  ) { }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -67,7 +109,7 @@ export class DashboardComponent {
   }
 
   public open(content) {
-    this.modalReference = this.modalService.open(content);
+    this.modalReference = this.modalService.open(content, { size: 'lg' });
     this.modalReference.result.then((result) => {
     }, (reason) => {
       if ((this.getDismissReason(reason) === 'backdrop') || (this.getDismissReason(reason) === 'ESC')) {
@@ -168,16 +210,31 @@ export class DashboardComponent {
     await worker.initialize('eng+deu');
     console.log('OCR Applying');
     const { data: { text } } = await worker.recognize(image);
-    this.brand = 'Sony Inter-American S.A';
-    this.category = 'Multimedia';
-    this.product = 'LED TV';
-    this.model = 'XBR-49X855B';
+    // this.brand = 'Sony Inter-American S.A';
+    // this.category = 'Multimedia';
+    // this.product = 'LED TV';
+    // this.model = 'XBR-49X855B';
     this.show = 'manual';
     console.log(text);
     await worker.terminate();
   }
 
   public report() {
-    console.log('report');
+    const loggedIn = localStorage.getItem('isLoggedIn');
+    localStorage.setItem('model', `${this.model}`);
+    localStorage.setItem('category', `${this.category}`);
+    localStorage.setItem('product', `${this.product}`);
+    localStorage.setItem('brand', `${this.brand}`);
+    if (loggedIn === 'true') {
+      void this.router.navigate(['/submit-reports']);
+      this.modalReference.close();
+    } else {
+      this.loginAndReport.emit(true);
+      this.modalReference.close();
+    }
+  }
+
+  ngOnDestroy() {
+    this.modalService.dismissAll();
   }
 }

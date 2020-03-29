@@ -6,5 +6,6 @@
 export const environment = {
   production: false,
     // see configuration in `proxy.config.json`
-    apiUrl: 'https://reqres.in/api'
+    apiUrl: 'https://shikwaapp.herokuapp.com/api/v1.0'
+    // apiUrl: 'http://192.168.0.14:3000/api/v1.0'
 };
