@@ -75,3 +75,23 @@
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
   background-color: red !important;
 }
+
+input:invalid {
+  // border-color: #dd2c00;
+  border: 2px solid lightgrey;
+}
+
+input:valid ~ span:after {
+  content: "✓";
+  padding-left: 10px;
+  padding-top: 5px;
+  position: absolute;
+  color: green;
+  font-weight: bold;
+  font-size: medium;
+}
+.Error {
+  font-size: 12px;
+  color: red;
+  text-align: center;
+}

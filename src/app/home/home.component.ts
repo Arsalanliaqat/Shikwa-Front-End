@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { NgForm } from "@angular/forms";
 
 @Component({
   selector: "app-home",
@@ -9,6 +10,17 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 })
 export class HomeComponent {
   public isCollapsed = true;
+  userName: string;
+  userPassword: string;
+  userRPassword: string;
+  firstName: String;
+  lastName: String;
+  userEmail: String;
+  userStreet: String;
+  userCity: String;
+  userZip: Number;
+  userCountry: String;
+  passwordRepeatError: String;
 
   signinToggle = true;
 
@@ -63,5 +75,28 @@ export class HomeComponent {
 
   public cancel() {
     this.signinToggle = true;
+  }
+
+  public async onSubmit(action: string, form: NgForm) {
+    if (action === "signup") {
+      if (this.userPassword !== this.userRPassword) {
+        this.passwordRepeatError = "Please enter correct password as Above";
+      } else {
+        this.passwordRepeatError = null;
+
+        let regObject = {
+          name: this.userName,
+          password: this.userPassword,
+          firstname: this.firstName,
+          lastname: this.lastName,
+          useremail: this.userEmail,
+          useraddress: this.userStreet,
+          usercity: this.userCity,
+          userZipCode: this.userZip,
+          userCountry: this.userCountry
+        };
+        console.log(JSON.stringify(regObject));
+      }
+    }
   }
 }
