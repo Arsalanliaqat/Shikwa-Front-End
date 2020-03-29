@@ -146,22 +146,17 @@
           <form #f="ngForm" (ngSubmit)="onSubmit('signup', f)">
             <div class="input-group mb-3">
               <div class="input-group-append">
-                <span class="input-group-text"
-                  ><i class="fas fa-user"></i
-                ></span>
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
               </div>
-              <input
-                type="text"
-                name="username"
+              <input type="text"
+                name="email"
+                [(ngModel)]="userEmail"
                 class="form-control input_user"
-                [(ngModel)]="userName"
                 value=""
-                placeholder="Username"
-                id="validationCustom01"
-                pattern="[a-z]{1,10}"
-                title="Username should only contain lowercase letters. e.g. john"
-                required
-              />
+                placeholder="Email Address"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                title="Please enter the valid Email"
+                required />
               <span class="validity"></span>
             </div>
             <div class="input-group mb-2">
@@ -237,25 +232,23 @@
               />
               <span class="validity"></span>
             </div>
-            <div class="input-group mb-3">
-              <div class="input-group-append">
-                <span class="input-group-text"
-                  ><i class="fas fa-envelope"></i
-                ></span>
+           
+              <div class="input-group mb-3">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="text"
+                  name="userPhone"
+                  class="form-control input_user"
+                  [(ngModel)]="userPhone"
+                  value=""
+                  placeholder="Phone Number"
+                  id="validationCustom01"
+                  maxlength="14"
+                  title="Enter Your Contact Number"
+                  required />
+                <span class="validity"></span>
               </div>
-              <input
-                type="text"
-                name="email"
-                [(ngModel)]="userEmail"
-                class="form-control input_user"
-                value=""
-                placeholder="Email Address"
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                title="Please enter the valid Email"
-                required
-              />
-              <span class="validity"></span>
-            </div>
             <div class="input-group mb-3">
               <div class="input-group-append">
                 <span class="input-group-text"

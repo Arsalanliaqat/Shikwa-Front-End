@@ -10,7 +10,7 @@ import { NgForm } from "@angular/forms";
 })
 export class HomeComponent {
   public isCollapsed = true;
-  userName: string;
+  userPhone: Number;
   userPassword: string;
   userRPassword: string;
   firstName: String;
@@ -85,7 +85,7 @@ export class HomeComponent {
         this.passwordRepeatError = null;
 
         let regObject = {
-          name: this.userName,
+          name: this.userPhone,
           password: this.userPassword,
           firstname: this.firstName,
           lastname: this.lastName,
