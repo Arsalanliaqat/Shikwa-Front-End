@@ -80,7 +80,7 @@ export class HomeComponent {
   public async onSubmit(action: string, form: NgForm) {
     if (action === "signup") {
       if (this.userPassword !== this.userRPassword) {
-        this.passwordRepeatError = "Please enter correct password as Above";
+        this.passwordRepeatError = "Please Enter the Correct Password";
       } else {
         this.passwordRepeatError = null;
 
