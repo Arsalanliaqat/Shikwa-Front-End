@@ -20,6 +20,7 @@ export class DashboardComponent implements OnDestroy {
       "product": "LED TV",
       "model": "XBR-49X855B",
       "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
       "valid": "valid"
     },
     {
@@ -28,6 +29,7 @@ export class DashboardComponent implements OnDestroy {
       "product": "LED TV",
       "model": "XBR-49X855B",
       "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
       "valid": "invalid"
     },
     {
@@ -36,7 +38,8 @@ export class DashboardComponent implements OnDestroy {
       "product": "LED TV",
       "model": "XBR-49X855B",
       "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
-      "valid": "valid"
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
+      "valid": "dangerous"
     },
     {
       "brand": "Sony Inter-American S.A",
@@ -44,6 +47,7 @@ export class DashboardComponent implements OnDestroy {
       "product": "LED TV",
       "model": "XBR-49X855B",
       "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
       "valid": "invalid"
     },
   ]

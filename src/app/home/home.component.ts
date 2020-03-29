@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from "angularx-social-login";
 import { GoogleLoginProvider, FacebookLoginProvider } from "angularx-social-login";
 import { SocialUser } from "angularx-social-login";
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,18 @@ import { SocialUser } from "angularx-social-login";
 export class HomeComponent implements OnInit, OnDestroy {
   public isCollapsed = true;
   signinToggle = true;
+
+  userPhone: Number;
+  userPassword: string;
+  userRPassword: string;
+  firstName: String;
+  lastName: String;
+  userEmail: String;
+  userStreet: String;
+  userCity: String;
+  userZip: Number;
+  userCountry: String;
+  passwordRepeatError: String;
 
   emailAddress: string;
   password: string;
@@ -123,12 +136,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  async onSubmit(action: string) {
+  async onSubmit(action: string, form: NgForm) {
     if (action === 'login') {
       this.signin();
       const result = await this.myAuthService.login(this.emailAddress, this.password);
       if (result.type === 'OK') {
-        if(this.modalReference) {
+        if (this.modalReference) {
           this.modalReference.close();
         }
         localStorage.setItem('token', result.token);
@@ -136,6 +149,29 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.signInHandler('Email');
       } else if (result.type === 'ERROR') {
         this.errorText = result.msg;
+      }
+    }
+    if (action === "signup") {
+      if (this.userPassword !== this.userRPassword) {
+        this.passwordRepeatError = "Password do not match";
+      } else {
+        this.passwordRepeatError = null;
+
+        let regObject = {
+          phone_number: this.userPhone,
+          Password: this.userPassword,
+          First_Name: this.firstName,
+          Last_Name: this.lastName,
+          Email: this.userEmail,
+          Street: this.userStreet,
+          City: this.userCity,
+          Zip: this.userZip,
+          Country: this.userCountry
+        };
+        // form.resetForm();
+        this.errorText = "Registration Successfull, Login please";
+        this.signinToggle = true;
+        console.log(JSON.stringify(regObject));
       }
     }
   }
