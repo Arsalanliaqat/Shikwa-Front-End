@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/c
 import { NgbModal, NgbModalRef, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
+import { AuthService } from "angularx-social-login";
 
 @Component({
   selector: 'app-my-reports',
@@ -24,7 +26,9 @@ export class MyReports implements OnInit, OnDestroy {
 
   constructor(
     private modalService: NgbModal,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   private getDismissReason(reason: any): string {
@@ -55,7 +59,24 @@ export class MyReports implements OnInit, OnDestroy {
     response.then((data) => {
       this.products = data;
     }).catch((error) => {
-      console.log("Error getting response" + JSON.stringify(error));
+      console.log(error);
+      if (error.status === 403 || error.status === 0) {
+        if (localStorage.getItem('loginWith') === 'Email') {
+          void this.router.navigate(['/']);
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
+        else if ((localStorage.getItem('loginWith') === 'Social')) {
+          this.authService.signOut();
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
+      }
+      else {
+        console.log("Error getting response" + JSON.stringify(error));
+      }
     });
   }
 

@@ -63,7 +63,7 @@
         <div class="form-group">
           <label>Search Using</label>
           <select class="form-control" name="method" [(ngModel)]="method" required>
-            <option value="model" [selected]="true">Product Model</option>
+            <option value="model" [selected]="show === 'manual'">Product Model</option>
             <option value="name">Product Name</option>
           </select>
         </div>
@@ -129,7 +129,8 @@
             </div>
           </div>
           <div class="col">
-            <img src={{Image_Path}} class="img-thumbnail">
+            <img *ngIf="response.Image_Path" src={{response.Image_Path}} class="img-thumbnail">
+            <img *ngIf="!response.Image_Path" src='../../assets/img/default.png' class="img-thumbnail">
           </div>
         </div>
         <div class="row m-2">

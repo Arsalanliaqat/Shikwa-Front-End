@@ -1,7 +1,9 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, Input, ElementRef, HostListener } from '@angular/core';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
+import { AuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-reports',
@@ -24,7 +26,9 @@ export class Reports implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   private getDismissReason(reason: any): string {
@@ -38,7 +42,6 @@ export class Reports implements OnInit {
   }
 
   public open(content, product: JSON) {
-    console.log(product);
     if (product) {
       this.detailsObject = product;
       this.modalReference = this.modalService.open(content, { size: 'lg' });
@@ -56,7 +59,18 @@ export class Reports implements OnInit {
     response.then((data) => {
       this.products = data;
     }).catch((error) => {
-      console.log("Error getting response" + JSON.stringify(error));
+      if (localStorage.getItem('loginWith') === 'Email') {
+        void this.router.navigate(['/']);
+        localStorage.removeItem('token');
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('loginWith');
+      }
+      else if ((localStorage.getItem('loginWith') === 'Social')) {
+        this.authService.signOut();
+        localStorage.removeItem('token');
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('loginWith');
+      }
     });
   }
 

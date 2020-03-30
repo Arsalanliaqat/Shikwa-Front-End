@@ -9,11 +9,11 @@ import { DashboardComponent } from '../../dashboard/dashboard.component'
 import { AuthGuard } from '../../auth/guards/auth.guard';
 
 export const AdminLayoutRoutes: Routes = [
-    { path: 'dashboard', component: DashboardComponent, canActivate : [AuthGuard] },
-    { path: 'profile', component: ProfileComponent, canActivate : [AuthGuard]  },
-    { path: 'submit-reports', component: SubmitReport, canActivate : [AuthGuard]  },
-    { path: 'my-reports', component: MyReports, canActivate : [AuthGuard]  },
-    { path: 'reports', component: Reports, canActivate : [AuthGuard]  },
-    { path: 'location', component: LocationComponent, canActivate : [AuthGuard]  },
-    { path: 'notifications', component: NotificationsComponent, canActivate : [AuthGuard]  },
+    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+    { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+    { path: 'submit-reports', component: SubmitReport, canActivate: [AuthGuard] },
+    { path: 'my-reports', component: MyReports, canActivate: [AuthGuard] },
+    { path: 'reports', component: Reports, canActivate: [AuthGuard] },
+    { path: 'location', component: LocationComponent, canActivate: [AuthGuard] },
+    { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
 ]   
