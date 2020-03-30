@@ -2,11 +2,12 @@ import { Component, OnInit, HostListener, ViewChild, TemplateRef, OnDestroy } fr
 import { Router } from '@angular/router';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MyAuthService } from '../auth/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from "angularx-social-login";
 import { GoogleLoginProvider, FacebookLoginProvider } from "angularx-social-login";
 import { SocialUser } from "angularx-social-login";
 import { NgForm } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,12 @@ import { NgForm } from '@angular/forms';
 export class HomeComponent implements OnInit, OnDestroy {
   public isCollapsed = true;
   signinToggle = true;
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    })
+  };
 
   userPhone: Number;
   userPassword: string;
@@ -32,6 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   emailAddress: string;
   password: string;
   errorText: string;
+  signupErrorText: string;
   redirectToSubmitReport = false;
 
   private user: SocialUser;
@@ -44,7 +52,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private router: Router,
     private modalService: NgbModal,
     private myAuthService: MyAuthService,
-    private authService: AuthService
+    private authService: AuthService,
+    private httpClient: HttpClient
   ) {
     localStorage.setItem('isLoggedIn', 'false');
   }
@@ -155,23 +164,37 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (this.userPassword !== this.userRPassword) {
         this.passwordRepeatError = "Password do not match";
       } else {
+        this.signupErrorText = 'Please wait';
         this.passwordRepeatError = null;
-
-        let regObject = {
-          phone_number: this.userPhone,
-          Password: this.userPassword,
-          First_Name: this.firstName,
-          Last_Name: this.lastName,
-          Email: this.userEmail,
-          Street: this.userStreet,
-          City: this.userCity,
-          Zip: this.userZip,
-          Country: this.userCountry
+        const signupDetails = {
+          "email": this.userEmail,
+          "password": this.userPassword,
+          "firstName": this.firstName,
+          "lastName": this.lastName,
+          "phoneNumber": this.userPhone,
+          "street": this.userStreet,
+          "city": this.userCity,
+          "zip": this.userZip,
+          "country": this.userCountry,
+          "userName": null,
+          "landlineNumber": null,
+          "gender": null,
+          "description": null
         };
-        // form.resetForm();
-        this.errorText = "Registration Successfull, Login please";
-        this.signinToggle = true;
-        console.log(JSON.stringify(regObject));
+        const user = this.httpClient.post<any>(`${environment.apiUrl}/user/register`, signupDetails, this.httpOptions).toPromise();
+        user.then((data) => {
+          console.log(data);
+          if(data.type === 'OK') {
+            this.errorText = "Registration Successfull, Login please";
+            this.signinToggle = true;
+            form.resetForm();
+          } else if (data.type === 'ERROR') {
+            this.signupErrorText = data.msg;
+          }
+        }).catch((error) => {
+          this.signupErrorText = "Connectivity problems";
+          console.log("Error getting response" + JSON.stringify(error));
+        });
       }
     }
   }

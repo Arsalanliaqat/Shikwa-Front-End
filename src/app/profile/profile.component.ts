@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-profile',
@@ -30,9 +32,14 @@ export class ProfileComponent implements OnInit {
   zip: string;
   description: string;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient,
+    private router: Router,
+    private authService: AuthService,
+  ) { }
 
   ngOnInit() {
+
     this.httpOptions.headers = this.httpOptions.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`);
     const profile = this.httpClient.get<any>(`${environment.apiUrl}/user`, this.httpOptions).toPromise();
     profile.then((data) => {
@@ -44,13 +51,20 @@ export class ProfileComponent implements OnInit {
       this.zip = data.zip;
       this.country = data.country;
       this.salutation = data.gender ? data.gender : '';
-
-      // this.username = data.username;
-      // this.phone = data.phone;
-      // this.landline = data.landline;
-      // this.description = data.description;
+      this.username = data.userName;
+      this.phone = data.phoneNumber;
+      this.landline = data.landlineNumber;
+      this.description = data.description;
     }).catch((error) => {
-      console.log("Error getting response" + JSON.stringify(error));
+      if (error.status === 403 || error.status === 0) {
+        localStorage.removeItem('token');
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('loginWith');
+        void this.router.navigate(['/']);
+      }
+      else {
+        console.log("Error getting response" + JSON.stringify(error));
+      }
     });
   }
 
@@ -63,19 +77,27 @@ export class ProfileComponent implements OnInit {
       "city": this.city,
       "zip": this.zip,
       "country": this.country,
-      // "salutation": this.salutation,
-      // "username": this.username,
-      // "phone": this.phone,
-      // "landline": this.landline,
-      // "description": this.description
+      "gender": this.salutation,
+      "userName": this.username,
+      "phoneNumber": this.phone,
+      "landlineNumber": this.landline,
+      "description": this.description
     }
-
     const profile = this.httpClient.post<any>(`${environment.apiUrl}/user`, profileData, this.httpOptions).toPromise();
     profile.then((data) => {
-      // console.log(data);
     }).catch((error) => {
-      console.log("Error getting response" + JSON.stringify(error));
+      if (localStorage.getItem('loginWith') === 'Email') {
+        void this.router.navigate(['/']);
+        localStorage.removeItem('token');
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('loginWith');
+      }
+      else if ((localStorage.getItem('loginWith') === 'Social')) {
+        this.authService.signOut();
+        localStorage.removeItem('token');
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('loginWith');
+      }
     });
-
   }
 }

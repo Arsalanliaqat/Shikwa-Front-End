@@ -11,17 +11,18 @@
           <div class="table-responsive">
             <table class="table">
               <thead class=" text-primary">
-                <th class="text-center">#</th>
-                <th>Product Brand</th>
-                <th>Product Name</th>
-                <th>Details</th>
+                <th style="width: 15%" class="text-center">#</th>
+                <th style="width: 30%">Product Brand</th>
+                <th style="width: 30%">Product Name</th>
+                <th style="width: 15%">Details</th>
               </thead>
               <tbody>
                 <tr *ngFor="let product of products; let i=index">
                   <td class="tabnum text-center">{{i+1}}</td>
                   <td class="tabbrand">{{product.Product_Brand}}</td>
                   <td class="tabname">{{product.Product_Name}}</td>
-                  <td class="tablink"><a class="btn btn-danger" style="color:white" (click)="open(content,product)">View Details </a>
+                  <td class="tablink"><a class="btn btn-danger" style="color:white" (click)="open(content,product)">View
+                      Details </a>
                   </td>
                 </tr>
               </tbody>
@@ -35,7 +36,8 @@
 
 <ng-template #content let-modal>
   <div class="modal-body">
-    <img src={{detailsObject.Image_Path}} class="img-thumbnail" alt="Product image">
+    <img *ngIf="detailsObject.Image_Path" src={{detailsObject.Image_Path}} class="img-thumbnail" alt="Product image">
+    <img *ngIf="!detailsObject.Image_Path" src='../../assets/img/default.png' class="img-thumbnail" alt="Product image">
     <table class="table table-bordered">
       <tbody>
         <tr>
@@ -45,6 +47,14 @@
         <tr>
           <td class="cell-data left">Product Brand</td>
           <td class="cell-data">{{detailsObject.Product_Brand}}</td>
+        </tr>
+        <tr>
+          <td class="cell-data left">Product Name</td>
+          <td class="cell-data">{{detailsObject.Product_Name}}</td>
+        </tr>
+        <tr>
+          <td class="cell-data left">Product Model</td>
+          <td class="cell-data">{{detailsObject.productModel}}</td>
         </tr>
         <tr>
           <td class="cell-data left">Product Category</td>
