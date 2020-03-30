@@ -54,7 +54,7 @@ export class SubmitReport implements OnInit, OnChanges {
     }
   }
 
-  onSubmit() {
+  onSubmit(form: NgForm) {
     const formData = new FormData();
     this.fileToUpload.forEach((file) => {
       formData.append("file", file);
@@ -71,7 +71,18 @@ export class SubmitReport implements OnInit, OnChanges {
     const profile = this.httpClient.post<Data>(`${environment.apiUrl}/product`, formData, this.httpOptions).toPromise();
     profile.then((data) => {
       console.log(data);
+      if (data.type === 'OK') {
+        localStorage.removeItem('model');
+        localStorage.removeItem('category');
+        localStorage.removeItem('product');
+        localStorage.removeItem('brand');
+        form.resetForm();
+      }
+      else {
+        console.log(data);
+      }
     }).catch((error) => {
+      console.log(error);
       console.log("Error getting response" + JSON.stringify(error));
     });
   }

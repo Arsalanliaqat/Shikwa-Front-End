@@ -17,15 +17,20 @@
                 <th style="width: 15%">Details</th>
               </thead>
               <tbody>
-                <tr *ngFor="let product of products; let i=index">
-                  <td class="text-center">{{i+1}}</td>
-                  <td>{{product.Product_Brand.trim()}}</td>
-                  <td>{{product.Product_Name.trim()}}</td>
-                  <td><a class="btn btn-danger" style="color:white" (click)="open(content,product)">View Details </a>
+                <tr *ngFor="let product of products | paginate: { currentPage: currentPage, itemsPerPage: itemsPerPage };
+                let i = index">
+                  <td class="text-center">{{ (itemsPerPage * (currentPage - 1) + i) + 1 }}</td>
+                  <td class="tabbrand">{{product.productBrand}}</td>
+                  <td class="tabname">{{product.productName}}</td>
+                  <td class="tablink"><a class="btn btn-danger" style="color:white" (click)="open(content,product)">View
+                      Details </a>
                   </td>
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div style="text-align: center;">
+            <pagination-controls (pageChange)="currentPage=$event" maxSize="13"></pagination-controls>
           </div>
         </div>
       </div>
@@ -35,21 +40,17 @@
 
 <ng-template #content let-modal>
   <div class="modal-body">
-    <img *ngIf="detailsObject.Image_Path" src={{detailsObject.Image_Path}} class="img-thumbnail" alt="Product image">
-    <img *ngIf="!detailsObject.Image_Path" src='../../assets/img/default.png' class="img-thumbnail" alt="Product image">
+    <img *ngIf="detailsObject.imagePath" src={{detailsObject.imagePath}} class="img-thumbnail" alt="Product image">
+    <img *ngIf="!detailsObject.imagePath" src='../../assets/img/default.png' class="img-thumbnail" alt="Product image">
     <table class="table table-bordered">
       <tbody>
         <tr>
-          <td class="cell-data left">Product Id</td>
-          <td class="cell-data">{{detailsObject.Id}}</td>
-        </tr>
-        <tr>
           <td class="cell-data left">Product Brand</td>
-          <td class="cell-data">{{detailsObject.Product_Brand}}</td>
+          <td class="cell-data">{{detailsObject.productBrand}}</td>
         </tr>
         <tr>
           <td class="cell-data left">Product Name</td>
-          <td class="cell-data">{{detailsObject.Product_Name}}</td>
+          <td class="cell-data">{{detailsObject.productName}}</td>
         </tr>
         <tr>
           <td class="cell-data left">Product Model</td>
@@ -57,32 +58,29 @@
         </tr>
         <tr>
           <td class="cell-data left">Product Category</td>
-          <td class="cell-data">{{detailsObject.Product_Category}}</td>
+          <td class="cell-data">{{detailsObject.productCategory}}</td>
         </tr>
         <tr>
           <td class="cell-data left">Country of Origin</td>
-          <td class="cell-data">{{detailsObject.Country_Origin}}</td>
+          <td class="cell-data">{{detailsObject.countryOrigin}}</td>
         </tr>
         <tr>
           <td class="cell-data left">City of Origin</td>
-          <td class="cell-data">{{detailsObject.City_Origin}}</td>
+          <td class="cell-data">{{detailsObject.cityOrigin}}</td>
         </tr>
         <tr>
           <td class="cell-data left">Risk Type</td>
-          <td class="cell-data">{{detailsObject.Risk_Type}}</td>
+          <td class="cell-data">{{detailsObject.riskType}}</td>
         </tr>
         <tr>
           <td class="cell-data left">Transaction Hash</td>
-          <td class="cell-data">{{detailsObject.transaction_hash}}</td>
+          <td class="cell-data">{{detailsObject.transactionHash}}</td>
         </tr>
         <tr>
           <td class="cell-data left">Description</td>
-          <td class="cell-data">{{detailsObject.Description}}</td>
+          <td class="cell-data">{{detailsObject.description}}</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <!-- <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close')">Close</button>
-  </div> -->
 </ng-template>

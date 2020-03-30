@@ -57,10 +57,18 @@ export class ProfileComponent implements OnInit {
       this.description = data.description;
     }).catch((error) => {
       if (error.status === 403 || error.status === 0) {
-        localStorage.removeItem('token');
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('loginWith');
-        void this.router.navigate(['/']);
+        if (localStorage.getItem('loginWith') === 'Email') {
+          void this.router.navigate(['/']);
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
+        else if ((localStorage.getItem('loginWith') === 'Social')) {
+          this.authService.signOut();
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
       }
       else {
         console.log("Error getting response" + JSON.stringify(error));
@@ -86,17 +94,22 @@ export class ProfileComponent implements OnInit {
     const profile = this.httpClient.post<any>(`${environment.apiUrl}/user`, profileData, this.httpOptions).toPromise();
     profile.then((data) => {
     }).catch((error) => {
-      if (localStorage.getItem('loginWith') === 'Email') {
-        void this.router.navigate(['/']);
-        localStorage.removeItem('token');
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('loginWith');
+      if (error.status === 403 || error.status === 0) {
+        if (localStorage.getItem('loginWith') === 'Email') {
+          void this.router.navigate(['/']);
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
+        else if ((localStorage.getItem('loginWith') === 'Social')) {
+          this.authService.signOut();
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
       }
-      else if ((localStorage.getItem('loginWith') === 'Social')) {
-        this.authService.signOut();
-        localStorage.removeItem('token');
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('loginWith');
+      else {
+        console.log("Error getting response" + JSON.stringify(error));
       }
     });
   }

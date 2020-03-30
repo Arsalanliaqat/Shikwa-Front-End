@@ -15,6 +15,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { DashboardModule } from '../../dashboard/dashboard.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { DashboardModule } from '../../dashboard/dashboard.module';
     NgbModule,
     DropzoneModule,
     DashboardModule,
+    NgxPaginationModule,
     ImageCropperModule,
     ToastrModule.forRoot()
   ],
