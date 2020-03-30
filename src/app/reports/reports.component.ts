@@ -22,6 +22,12 @@ export class Reports implements OnInit {
     })
   };
 
+  itemsPerPage: number = 10;
+  currentPage: number = 1;
+  absoluteIndex(indexOnPage: number): number {
+    return this.itemsPerPage * (this.currentPage - 1) + indexOnPage;
+  }
+
   products: JSON;
 
   constructor(
@@ -44,6 +50,7 @@ export class Reports implements OnInit {
   public open(content, product: JSON) {
     if (product) {
       this.detailsObject = product;
+      console.log(product);
       this.modalReference = this.modalService.open(content, { size: 'lg' });
       this.modalReference.result.then((result) => {
       }, (reason) => {
@@ -59,17 +66,22 @@ export class Reports implements OnInit {
     response.then((data) => {
       this.products = data;
     }).catch((error) => {
-      if (localStorage.getItem('loginWith') === 'Email') {
-        void this.router.navigate(['/']);
-        localStorage.removeItem('token');
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('loginWith');
+      if (error.status === 403 || error.status === 0) {
+        if (localStorage.getItem('loginWith') === 'Email') {
+          void this.router.navigate(['/']);
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
+        else if ((localStorage.getItem('loginWith') === 'Social')) {
+          this.authService.signOut();
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
       }
-      else if ((localStorage.getItem('loginWith') === 'Social')) {
-        this.authService.signOut();
-        localStorage.removeItem('token');
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('loginWith');
+      else {
+        console.log("Error getting response" + JSON.stringify(error));
       }
     });
   }

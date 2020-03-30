@@ -217,9 +217,10 @@ export class DashboardComponent implements OnDestroy {
     // this.brand = 'Sony Inter-American S.A';
     // this.category = 'Multimedia';
     // this.product = 'LED TV';
-    // this.model = 'XBR-49X855B';
+    // this.model = 'XBR-49X855B'; 
+    
     this.show = 'manual';
-    console.log(text);
+    console.log(text.split(' '));
     await worker.terminate();
   }
 

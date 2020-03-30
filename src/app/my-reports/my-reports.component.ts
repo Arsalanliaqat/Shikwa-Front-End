@@ -22,6 +22,12 @@ export class MyReports implements OnInit, OnDestroy {
     })
   };
 
+  itemsPerPage: number = 10;
+  currentPage: number = 1;
+  absoluteIndex(indexOnPage: number): number {
+    return this.itemsPerPage * (this.currentPage - 1) + indexOnPage;
+  }
+
   products: JSON;
 
   constructor(
