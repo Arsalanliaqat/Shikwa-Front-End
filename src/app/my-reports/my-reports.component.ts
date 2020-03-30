@@ -14,6 +14,8 @@ export class MyReports implements OnInit, OnDestroy {
 
   public modalReference: NgbModalRef;
   public detailsObject: JSON;
+  searchField: string;
+
   @ViewChild('content', { read: TemplateRef }) content: TemplateRef<any>;
 
   httpOptions = {
@@ -88,6 +90,31 @@ export class MyReports implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.modalService.dismissAll();
+  }
+
+  searchRecords() {
+    const response = this.httpClient.get<any>(`${environment.apiUrl}/products?q=${this.searchField}&uid${localStorage.getItem('userId')}`, this.httpOptions).toPromise();
+    response.then((data) => {
+      this.products = data;
+    }).catch((error) => {
+      if (error.status === 403 || error.status === 0) {
+        if (localStorage.getItem('loginWith') === 'Email') {
+          void this.router.navigate(['/']);
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
+        else if ((localStorage.getItem('loginWith') === 'Social')) {
+          this.authService.signOut();
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
+      }
+      else {
+        console.log("Error getting response" + JSON.stringify(error));
+      }
+    });
   }
 
 }

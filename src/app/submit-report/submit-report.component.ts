@@ -13,6 +13,7 @@ export class SubmitReport implements OnInit, OnChanges {
 
   @ViewChild('f') submitForm: NgForm;
 
+  submitStatus: string;
   brand: string;
   category: string;
   product: string;
@@ -72,11 +73,14 @@ export class SubmitReport implements OnInit, OnChanges {
     profile.then((data) => {
       console.log(data);
       if (data.type === 'OK') {
+        this.submitStatus = 'Report Submitted Successfully';
         localStorage.removeItem('model');
         localStorage.removeItem('category');
         localStorage.removeItem('product');
         localStorage.removeItem('brand');
         form.resetForm();
+        this.fileToUpload = null;
+        this.fileName = null;
       }
       else {
         console.log(data);

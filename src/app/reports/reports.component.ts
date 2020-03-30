@@ -22,6 +22,8 @@ export class Reports implements OnInit {
     })
   };
 
+  searchField: string;
+
   itemsPerPage: number = 10;
   currentPage: number = 1;
   absoluteIndex(indexOnPage: number): number {
@@ -88,6 +90,31 @@ export class Reports implements OnInit {
 
   ngOnDestroy() {
     this.modalService.dismissAll();
+  }
+
+  searchRecords() {
+    const response = this.httpClient.get<any>(`${environment.apiUrl}/products?q=${this.searchField}`, this.httpOptions).toPromise();
+    response.then((data) => {
+      this.products = data;
+    }).catch((error) => {
+      if (error.status === 403 || error.status === 0) {
+        if (localStorage.getItem('loginWith') === 'Email') {
+          void this.router.navigate(['/']);
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
+        else if ((localStorage.getItem('loginWith') === 'Social')) {
+          this.authService.signOut();
+          localStorage.removeItem('token');
+          localStorage.setItem('isLoggedIn', 'false');
+          localStorage.removeItem('loginWith');
+        }
+      }
+      else {
+        console.log("Error getting response" + JSON.stringify(error));
+      }
+    });
   }
 
 }
