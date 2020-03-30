@@ -128,7 +128,7 @@
               <p class="details"><span style="font-weight: bold;">Model:</span> {{response.model}}</p>
             </div>
           </div>
-          <div class="col">
+          <div class="col" style="text-align: center;">
             <img *ngIf="response.Image_Path" src={{response.Image_Path}} class="img-thumbnail">
             <img *ngIf="!response.Image_Path" src='../../assets/img/default.png' class="img-thumbnail">
           </div>
