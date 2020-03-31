@@ -34,3 +34,14 @@
   position: absolute;
   right: 31px;
 }
+
+.searchtag {
+  width: fit-content;
+  position: absolute;
+  right: 31px;
+}
+
+.redbox{
+  background-color: red !important;
+  color: white;
+}

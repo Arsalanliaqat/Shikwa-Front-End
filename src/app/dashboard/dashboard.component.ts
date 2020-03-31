@@ -4,6 +4,9 @@ import { createWorker } from 'tesseract.js';
 import { ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { AuthService } from 'angularx-social-login';
 const Jimp = require('jimp');
 
 @Component({
@@ -13,69 +16,73 @@ const Jimp = require('jimp');
 })
 export class DashboardComponent implements OnDestroy {
 
-  mynewresponse = [
-    {
-      "brand": "Sony Inter-American S.A",
-      "category": "Multimedia",
-      "product": "LED TV",
-      "model": "XBR-49X855B",
-      "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
-      "valid": "valid"
-    },
-    {
-      "brand": "Sony Inter-American S.A",
-      "category": "Multimedia",
-      "product": "LED TV",
-      "model": "XBR-49X855B",
-      "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
-      "valid": "invalid"
-    },
-    {
-      "brand": "Sony Inter-American S.A",
-      "category": "Multimedia",
-      "product": "LED TV",
-      "model": "XBR-49X855B",
-      "Image_Path": "",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
-      "valid": "dangerous"
-    },
-    {
-      "brand": "Sony Inter-American S.A",
-      "category": "Multimedia",
-      "product": "LED TV",
-      "model": "XBR-49X855B",
-      "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
-      "valid": "invalid"
-    },
-  ]
+  // mynewresponse = [
+  //   {
+  //     "brand": "Sony Inter-American S.A",
+  //     "category": "Multimedia",
+  //     "product": "LED TV",
+  //     "model": "XBR-49X855B",
+  //     "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
+  //     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
+  //     "valid": "valid"
+  //   },
+  //   {
+  //     "brand": "Sony Inter-American S.A",
+  //     "category": "Multimedia",
+  //     "product": "LED TV",
+  //     "model": "XBR-49X855B",
+  //     "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
+  //     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
+  //     "valid": "invalid"
+  //   },
+  //   {
+  //     "brand": "Sony Inter-American S.A",
+  //     "category": "Multimedia",
+  //     "product": "LED TV",
+  //     "model": "XBR-49X855B",
+  //     "Image_Path": "",
+  //     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
+  //     "valid": "dangerous"
+  //   },
+  //   {
+  //     "brand": "Sony Inter-American S.A",
+  //     "category": "Multimedia",
+  //     "product": "LED TV",
+  //     "model": "XBR-49X855B",
+  //     "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
+  //     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
+  //     "valid": "invalid"
+  //   },
+  // ]
+
+
+
+  @ViewChild('content', { read: TemplateRef }) content: TemplateRef<any>;
+  @Output() loginAndReport = new EventEmitter();
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    })
+  };
 
   private rotation = 0;
   private scale = 1;
 
-  @ViewChild('content', { read: TemplateRef }) content: TemplateRef<any>;
-  @ViewChild('result', { read: TemplateRef }) result: TemplateRef<any>;
-  @Output() loginAndReport = new EventEmitter();
-
-  public modalReference: NgbModalRef;
-  public closeResult = '';
+  public transform: ImageTransform = {};
   public selectedImage: File = null;
   public croppedImage: any = '';
   public canvasRotation = 0;
-  public transform: ImageTransform = {};
-  // public brand = '';
-  // public category = '';
-  // public product = '';
-  // public model = ''
-  public brand = 'Sony Inter-American S.A';
-  public category = 'Multimedia';
-  public product = 'LED TV';
-  public model = 'XBR-49X855B';
-  public Image_Path = 'https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg';
-  public valid = true;
+
+  public modalReference: NgbModalRef;
   public show = 'loading';
+
+  public product = '';
+  public model = ''
+  public method = '';
+
+  searchResult: JSON;
+
   public config: DropzoneConfigInterface = {
     clickable: true,
     maxFiles: 1,
@@ -90,6 +97,9 @@ export class DashboardComponent implements OnDestroy {
   constructor(
     private modalService: NgbModal,
     private router: Router,
+    private httpClient: HttpClient,
+    private authService: AuthService
+
   ) { }
 
   private getDismissReason(reason: any): string {
@@ -110,15 +120,6 @@ export class DashboardComponent implements OnDestroy {
       flipH: flippedV,
       flipV: flippedH
     };
-  }
-
-  public open(content) {
-    this.modalReference = this.modalService.open(content, { size: 'lg' });
-    this.modalReference.result.then((result) => {
-    }, (reason) => {
-      if ((this.getDismissReason(reason) === 'backdrop') || (this.getDismissReason(reason) === 'ESC')) {
-      }
-    });
   }
 
   public imageCropped(event: ImageCroppedEvent) {
@@ -176,6 +177,18 @@ export class DashboardComponent implements OnDestroy {
     this.selectedImage = null;
   }
 
+  public open(content) {
+    this.modalReference = this.modalService.open(content, { size: 'lg' });
+    if (this.show === 'manual') {
+      this.method = 'model';
+    }
+    this.modalReference.result.then((result) => {
+    }, (reason) => {
+      if ((this.getDismissReason(reason) === 'backdrop') || (this.getDismissReason(reason) === 'ESC')) {
+      }
+    });
+  }
+
   public async scan() {
     this.show = 'loading';
     await this.processImage();
@@ -214,22 +227,31 @@ export class DashboardComponent implements OnDestroy {
     await worker.initialize('eng+deu');
     console.log('OCR Applying');
     const { data: { text } } = await worker.recognize(image);
-    // this.brand = 'Sony Inter-American S.A';
-    // this.category = 'Multimedia';
-    // this.product = 'LED TV';
-    // this.model = 'XBR-49X855B'; 
-    
     this.show = 'manual';
     console.log(text.split(' '));
     await worker.terminate();
   }
 
+  public searchProduct() {
+    const query = (this.method === 'model') ? this.model : this.product;
+    const result = this.httpClient.get<any>(`${environment.apiUrl}/verify?q=${query}&t=${this.method.toUpperCase()}`, this.httpOptions).toPromise();
+    result.then((data) => {
+      this.searchResult = data;
+      this.show = 'result';
+      // this.open(this.content);
+    }).catch((error) => {
+      console.log("Error getting response" + JSON.stringify(error));
+    });
+
+    this.method = 'model';
+    this.product = '';
+    this.model = '';
+  }
+
   public report() {
     const loggedIn = localStorage.getItem('isLoggedIn');
     localStorage.setItem('model', `${this.model}`);
-    localStorage.setItem('category', `${this.category}`);
     localStorage.setItem('product', `${this.product}`);
-    localStorage.setItem('brand', `${this.brand}`);
     if (loggedIn === 'true') {
       void this.router.navigate(['/submit-reports']);
       this.modalReference.close();

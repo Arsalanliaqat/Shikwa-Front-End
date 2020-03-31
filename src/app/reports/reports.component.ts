@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, Input, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -31,6 +31,8 @@ export class Reports implements OnInit {
   }
 
   products: JSON;
+  swapProducts: JSON;
+  searchMode: boolean = false;
 
   constructor(
     private modalService: NgbModal,
@@ -95,6 +97,8 @@ export class Reports implements OnInit {
   searchRecords() {
     const response = this.httpClient.get<any>(`${environment.apiUrl}/products?q=${this.searchField}`, this.httpOptions).toPromise();
     response.then((data) => {
+      this.searchMode = true;
+      this.swapProducts = this.products;
       this.products = data;
     }).catch((error) => {
       if (error.status === 403 || error.status === 0) {
@@ -115,6 +119,13 @@ export class Reports implements OnInit {
         console.log("Error getting response" + JSON.stringify(error));
       }
     });
+  }
+
+  clearSearch() {
+    this.products = this.swapProducts;
+    this.swapProducts = null;
+    this.searchField = '';
+    this.searchMode = false;
   }
 
 }
