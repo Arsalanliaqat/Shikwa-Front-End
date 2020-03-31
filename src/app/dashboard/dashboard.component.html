@@ -58,7 +58,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <form>
+      <form #f="ngForm" (submit)="searchProduct()">
         <div class="form-group">
           <label>Search Using</label>
           <select class="form-control" name="method" [(ngModel)]="method" required>
@@ -69,17 +69,22 @@
         <div class="form-group">
           <label>Product Name</label>
           <input type="text" class="form-control" name="product" [(ngModel)]="product" value="{{product}}"
-            placeholder="Product Name i.e. LED TV">
+            placeholder="Product Name i.e. LED TV" [disabled]="method === 'model'">
         </div>
         <div class="form-group">
           <label>Product Model</label>
           <input type="text" class="form-control" name="model" [(ngModel)]="model" value="{{model}}"
-            placeholder="Product Model i.e. XBR-49X855B">
+            placeholder="Product Model i.e. XBR-49X855B" [disabled]="method === 'name'">
+        </div>
+        <div class="form-group mt-1" style="padding: 1rem;">
+          <div class="d-flex justify-content-center">
+            <button (change)="searchProduct()" type="submit" class="btn btn-danger">Search</button>
+          </div>
         </div>
       </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="searchProduct();">Search</button>
+      <div *ngIf="searchError" style="color:red; text-align: center;">
+        <small>{{searchError}}</small>
+      </div>
     </div>
   </div>
 
@@ -89,6 +94,14 @@
       <button class="modal-title btn btn-danger" (click)="report()">Report</button>
     </div>
     <div class="modal-body">
+      <div *ngIf="!searchResult.length">
+        <div class="row d-flex justify-content-center m-10">
+          <p>Nothing Found!</p>
+        </div>
+        <div class="row d-flex justify-content-center m-10">
+          <button class="btn btn-danger" (click)="goBackToSearch()">Go Back</button>
+        </div>
+      </div>
       <div class="border" *ngFor="let response of searchResult; let index=index;">
         <div class="row">
           <div class="col">
@@ -129,7 +142,7 @@
               <p class="details"><span style="font-weight: bold;">Model:</span> {{response.productModel}}</p>
             </div>
           </div>
-          <div class="col" style="text-align: center;">
+          <div class="col col-4 imageview" style="text-align: center;">
             <img *ngIf="response.imagePath" src={{response.imagePath}} class="img-thumbnail">
             <img *ngIf="!response.imagePath" src='../../assets/img/default.png' class="img-thumbnail">
           </div>

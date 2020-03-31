@@ -79,6 +79,7 @@ export class SubmitReport implements OnInit, OnChanges {
         this.fileName = null;
       }
       else {
+        this.submitStatus = data.msg;
         console.log(data);
       }
     }).catch((error) => {

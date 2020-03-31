@@ -30,9 +30,10 @@ export class Reports implements OnInit {
     return this.itemsPerPage * (this.currentPage - 1) + indexOnPage;
   }
 
-  products: JSON;
-  swapProducts: JSON;
+  products;
+  swapProducts;
   searchMode: boolean = false;
+  searchKeyword: string;
 
   constructor(
     private modalService: NgbModal,
@@ -97,6 +98,7 @@ export class Reports implements OnInit {
   searchRecords() {
     const response = this.httpClient.get<any>(`${environment.apiUrl}/products?q=${this.searchField}`, this.httpOptions).toPromise();
     response.then((data) => {
+      this.searchKeyword = this.searchField;
       this.searchMode = true;
       this.swapProducts = this.products;
       this.products = data;
@@ -126,6 +128,7 @@ export class Reports implements OnInit {
     this.swapProducts = null;
     this.searchField = '';
     this.searchMode = false;
+    this.searchKeyword = '';
   }
 
 }

@@ -23,12 +23,10 @@
               </form>
             </div>
           </div>
-        </div>
-        <div class="card-body">
           <div *ngIf="this.searchMode" class="mb-5">
             <form class="searchtag" (submit)="searchRecords()">
               <div class="input-group no-border">
-                <span class="form-control redbox">{{searchField}}</span>
+                <span class="form-control redbox">{{searchKeyword}}</span>
                 <div class="input-group-append">
                   <div (click)="clearSearch()" class="input-group-text redbox">
                     <i class="now-ui-icons ui-1_simple-remove redbox"></i>
@@ -37,29 +35,37 @@
               </div>
             </form>
           </div>
-          <div class="table-responsive">
-            <table class="table">
-              <thead class=" text-primary">
-                <th style="width: 15%" class="text-center">#</th>
-                <th style="width: 30%">Product Brand</th>
-                <th style="width: 30%">Product Name</th>
-                <th style="width: 15%">Details</th>
-              </thead>
-              <tbody>
-                <tr *ngFor="let product of products | paginate: { currentPage: currentPage, itemsPerPage: itemsPerPage };
-                let i = index">
-                  <td class="text-center">{{ (itemsPerPage * (currentPage - 1) + i) + 1 }}</td>
-                  <td class="tabbrand">{{product.productBrand}}</td>
-                  <td class="tabname">{{product.productName}}</td>
-                  <td class="tablink"><a class="btn btn-danger" style="color:white" (click)="open(content,product)">View
-                      Details </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        </div>
+        <div class="card-body">
+          <div *ngIf="!products" class="d-flex justify-content-center">
+            <div class="loader"></div>
           </div>
-          <div style="text-align: center;">
-            <pagination-controls (pageChange)="currentPage=$event" maxSize="13"></pagination-controls>
+          <div *ngIf="products">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th style="width: 15%" class="text-center">#</th>
+                  <th style="width: 30%">Product Brand</th>
+                  <th style="width: 30%">Product Name</th>
+                  <th style="width: 15%">Details</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of products | paginate: { currentPage: currentPage, itemsPerPage: itemsPerPage };
+                  let i = index">
+                    <td class="text-center">{{ (itemsPerPage * (currentPage - 1) + i) + 1 }}</td>
+                    <td class="tabbrand">{{product.productBrand}}</td>
+                    <td class="tabname">{{product.productName}}</td>
+                    <td class="tablink"><a class="btn btn-danger" style="color:white"
+                        (click)="open(content,product)">View
+                        Details </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="text-align: center;">
+              <pagination-controls (pageChange)="currentPage=$event" maxSize="13"></pagination-controls>
+            </div>
           </div>
         </div>
       </div>

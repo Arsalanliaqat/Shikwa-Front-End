@@ -13,12 +13,15 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  
   private listTitles: any[];
-  location: Location;
-  mobile_menu_visible: any = 0;
   private toggleButton: any;
   private sidebarVisible: boolean;
+  
+  location: Location;
+  mobile_menu_visible: any = 0;
   confirmPasswordError: string;
+  
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -29,20 +32,18 @@ export class NavbarComponent implements OnInit {
   newPassword: string;
   confirmPassword: string;
 
+  isCollapsed = true;
   modalReference: NgbModalRef;
-  public isCollapsed = true;
-
   updatePasswordStatus: string;
 
   constructor(
-    location: Location,
     private element: ElementRef,
     private router: Router,
     private authService: AuthService,
     private modalService: NgbModal,
     private httpClient: HttpClient,
+    location: Location,
   ) {
-
     this.location = location;
     this.sidebarVisible = false;
   }
@@ -80,7 +81,6 @@ export class NavbarComponent implements OnInit {
       }
     });
   }
-
 
   collapse() {
     this.isCollapsed = !this.isCollapsed;

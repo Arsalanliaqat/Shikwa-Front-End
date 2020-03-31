@@ -6,7 +6,6 @@ import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-boo
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { AuthService } from 'angularx-social-login';
 const Jimp = require('jimp');
 
 @Component({
@@ -15,47 +14,6 @@ const Jimp = require('jimp');
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnDestroy {
-
-  // mynewresponse = [
-  //   {
-  //     "brand": "Sony Inter-American S.A",
-  //     "category": "Multimedia",
-  //     "product": "LED TV",
-  //     "model": "XBR-49X855B",
-  //     "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
-  //     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
-  //     "valid": "valid"
-  //   },
-  //   {
-  //     "brand": "Sony Inter-American S.A",
-  //     "category": "Multimedia",
-  //     "product": "LED TV",
-  //     "model": "XBR-49X855B",
-  //     "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
-  //     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
-  //     "valid": "invalid"
-  //   },
-  //   {
-  //     "brand": "Sony Inter-American S.A",
-  //     "category": "Multimedia",
-  //     "product": "LED TV",
-  //     "model": "XBR-49X855B",
-  //     "Image_Path": "",
-  //     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
-  //     "valid": "dangerous"
-  //   },
-  //   {
-  //     "brand": "Sony Inter-American S.A",
-  //     "category": "Multimedia",
-  //     "product": "LED TV",
-  //     "model": "XBR-49X855B",
-  //     "Image_Path": "https://chapmanworld.com/wp-content/uploads/2015/03/soap__large.jpg",
-  //     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis ac dui sed tincidunt. Donec neque ipsum, suscipit ac pellentesque ac, vehicula sit amet lectus. Etiam nulla lectus, ullamcorper ac ligula commodo, vehicula luctus quam. Quisque fringilla auctor accumsan. Aenean feugiat ligula massa, a egestas mauris dignissim at. Nam gravida purus quis magna finibus laoreet. Curabitur vel quam ut ex lobortis venenatis. Aliquam luctus maximus ante, ut elementum elit. In luctus tincidunt augue nec maximus. Donec viverra, enim non porta vestibulum, urna sapien cursus sem, et auctor velit purus sed est. Vestibulum a nunc quis enim imperdiet vestibulum a nec lorem. Donec neque justo, fermentum quis venenatis semper, suscipit vitae sem. Duis finibus consequat elit in pharetra.",
-  //     "valid": "invalid"
-  //   },
-  // ]
-
-
 
   @ViewChild('content', { read: TemplateRef }) content: TemplateRef<any>;
   @Output() loginAndReport = new EventEmitter();
@@ -80,6 +38,7 @@ export class DashboardComponent implements OnDestroy {
   public product = '';
   public model = ''
   public method = '';
+  public searchError: string;
 
   searchResult: JSON;
 
@@ -97,9 +56,7 @@ export class DashboardComponent implements OnDestroy {
   constructor(
     private modalService: NgbModal,
     private router: Router,
-    private httpClient: HttpClient,
-    private authService: AuthService
-
+    private httpClient: HttpClient
   ) { }
 
   private getDismissReason(reason: any): string {
@@ -233,19 +190,27 @@ export class DashboardComponent implements OnDestroy {
   }
 
   public searchProduct() {
-    const query = (this.method === 'model') ? this.model : this.product;
-    const result = this.httpClient.get<any>(`${environment.apiUrl}/verify?q=${query}&t=${this.method.toUpperCase()}`, this.httpOptions).toPromise();
-    result.then((data) => {
-      this.searchResult = data;
-      this.show = 'result';
-      // this.open(this.content);
-    }).catch((error) => {
-      console.log("Error getting response" + JSON.stringify(error));
-    });
-
-    this.method = 'model';
-    this.product = '';
-    this.model = '';
+    if (((this.method === 'model') && (this.model !== '')) || ((this.method === 'name') && (this.product !== ''))) {
+      this.searchError = 'Searching...';
+      const query = (this.method.toString() === 'model') ? this.model : this.product;
+      const result = this.httpClient.get<any>(`${environment.apiUrl}/verify?q=${query}&t=${this.method.toUpperCase()}`, this.httpOptions).toPromise();
+      result.then((data) => {
+        this.searchResult = data;
+        this.show = 'result';
+        this.searchError = '';
+        if(data.length) {
+          this.method = 'model';
+          this.product = '';
+          this.model = '';
+        }
+      }).catch((error) => {
+        this.searchError = "Error getting response" + JSON.stringify(error);
+        // console.log("Error getting response" + JSON.stringify(error));
+      });
+    }
+    else {
+      this.searchError = 'Search field is empty';
+    }
   }
 
   public report() {
@@ -259,6 +224,10 @@ export class DashboardComponent implements OnDestroy {
       this.loginAndReport.emit(true);
       this.modalReference.close();
     }
+  }
+
+  goBackToSearch() {
+    this.show = 'manual';
   }
 
   ngOnDestroy() {
