@@ -51,3 +51,14 @@
   height: auto;
   border-radius: 0 50px 50px 0 !important;
 }
+
+.searchtag {
+  width: fit-content;
+  position: absolute;
+  right: 31px;
+}
+
+.redbox{
+  background-color: red !important;
+  color: white;
+}

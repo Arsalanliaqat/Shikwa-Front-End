@@ -39,7 +39,6 @@ export class ProfileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.httpOptions.headers = this.httpOptions.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`);
     const profile = this.httpClient.get<any>(`${environment.apiUrl}/user`, this.httpOptions).toPromise();
     profile.then((data) => {

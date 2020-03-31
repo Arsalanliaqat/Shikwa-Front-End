@@ -37,9 +37,7 @@ export class SubmitReport implements OnInit, OnChanges {
   ngOnInit() {
     this.httpOptions.headers = this.httpOptions.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`);
     this.model = localStorage.getItem('model');
-    this.category = localStorage.getItem('category');
     this.product = localStorage.getItem('product');
-    this.brand = localStorage.getItem('brand');
   }
 
   handleFileInput(files: FileList) {
@@ -75,9 +73,7 @@ export class SubmitReport implements OnInit, OnChanges {
       if (data.type === 'OK') {
         this.submitStatus = 'Report Submitted Successfully';
         localStorage.removeItem('model');
-        localStorage.removeItem('category');
         localStorage.removeItem('product');
-        localStorage.removeItem('brand');
         form.resetForm();
         this.fileToUpload = null;
         this.fileName = null;

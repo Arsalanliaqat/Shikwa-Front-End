@@ -3,6 +3,9 @@ import { ROUTES } from '../sidebar/sidebar.component';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from "angularx-social-login";
+import { NgbModal, NgbModalRef, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -15,20 +18,37 @@ export class NavbarComponent implements OnInit {
   mobile_menu_visible: any = 0;
   private toggleButton: any;
   private sidebarVisible: boolean;
+  confirmPasswordError: string;
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    })
+  };
 
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+
+  modalReference: NgbModalRef;
   public isCollapsed = true;
+
+  updatePasswordStatus: string;
 
   constructor(
     location: Location,
     private element: ElementRef,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalService: NgbModal,
+    private httpClient: HttpClient,
   ) {
+
     this.location = location;
     this.sidebarVisible = false;
   }
 
   ngOnInit() {
+    this.httpOptions.headers = this.httpOptions.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`);
     this.listTitles = ROUTES.filter(listTitle => listTitle);
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
@@ -41,6 +61,26 @@ export class NavbarComponent implements OnInit {
       }
     });
   }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'backdrop';
+    } else {
+      return reason;
+    }
+  }
+
+  public open(content) {
+    this.modalReference = this.modalService.open(content, { ariaLabelledBy: 'modal-changePassword', centered: true });
+    this.modalReference.result.then((result) => {
+    }, (reason) => {
+      if ((this.getDismissReason(reason) === 'backdrop') || (this.getDismissReason(reason) === 'ESC')) {
+      }
+    });
+  }
+
 
   collapse() {
     this.isCollapsed = !this.isCollapsed;
@@ -143,6 +183,42 @@ export class NavbarComponent implements OnInit {
       localStorage.removeItem('token');
       localStorage.setItem('isLoggedIn', 'false');
       localStorage.removeItem('loginWith');
+    }
+  }
+
+  updatePassword() {
+    const newPasswordData = {
+      "oldPassword": this.oldPassword,
+      "newPassword": this.confirmPassword
+    }
+    if (this.newPassword !== this.confirmPassword) {
+      this.confirmPasswordError = "Password do not match";
+    } else {
+      const passwords = this.httpClient.post<any>(`${environment.apiUrl}/user/password`, newPasswordData, this.httpOptions).toPromise();
+      passwords.then((data) => {
+        if (data.Type === 'OK') {
+          localStorage.setItem('token', data.token);
+          this.updatePasswordStatus = 'Password Changed Successfully';
+        }
+      }).catch((error) => {
+        if (error.status === 403 || error.status === 0) {
+          if (localStorage.getItem('loginWith') === 'Email') {
+            void this.router.navigate(['/']);
+            localStorage.removeItem('token');
+            localStorage.setItem('isLoggedIn', 'false');
+            localStorage.removeItem('loginWith');
+          }
+          else if ((localStorage.getItem('loginWith') === 'Social')) {
+            this.authService.signOut();
+            localStorage.removeItem('token');
+            localStorage.setItem('isLoggedIn', 'false');
+            localStorage.removeItem('loginWith');
+          }
+        }
+        else {
+          console.log("Error getting response" + JSON.stringify(error));
+        }
+      });
     }
   }
 }

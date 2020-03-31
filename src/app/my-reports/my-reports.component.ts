@@ -31,6 +31,8 @@ export class MyReports implements OnInit, OnDestroy {
   }
 
   products: JSON;
+  swapProducts: JSON;
+  searchMode: boolean = false;
 
   constructor(
     private modalService: NgbModal,
@@ -95,6 +97,8 @@ export class MyReports implements OnInit, OnDestroy {
   searchRecords() {
     const response = this.httpClient.get<any>(`${environment.apiUrl}/products?q=${this.searchField}&uid${localStorage.getItem('userId')}`, this.httpOptions).toPromise();
     response.then((data) => {
+      this.searchMode = true;
+      this.swapProducts = this.products;
       this.products = data;
     }).catch((error) => {
       if (error.status === 403 || error.status === 0) {
@@ -117,4 +121,10 @@ export class MyReports implements OnInit, OnDestroy {
     });
   }
 
+  clearSearch() {
+    this.products = this.swapProducts;
+    this.swapProducts = null;
+    this.searchField = '';
+    this.searchMode = false;
+  }
 }

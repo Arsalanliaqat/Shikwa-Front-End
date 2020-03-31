@@ -35,6 +35,17 @@
             </p>
           </a>
         </li>
+        <li class="nav-item" ngbDropdown>
+          <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle>
+            <i class="now-ui-icons ui-1_settings-gear-63"></i>
+            <p>
+              <span class="d-lg-none d-md-block">Options</span>
+            </p>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <a class="dropdown-item" (click)="open(changepassword)">Change Password</a>
+          </div>
+        </li>
         <li class="nav-item">
           <a class="nav-link" (click)="logout()"><i class="now-ui-icons arrows-1_share-66  "></i>
           </a>
@@ -43,3 +54,55 @@
     </div>
   </div>
 </nav>
+
+
+<ng-template #changepassword let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Change Password</h4>
+  </div>
+  <div class="modal-body">
+    <form #f="ngForm" (submit)="updatePassword()">
+      <div class="form-group row">
+        <label for="oldPassword" class="col-sm-4 col-form-label">Old Password</label>
+        <div class="col-sm-7">
+          <input type="password" class="form-control" name="oldPassword" [(ngModel)]="oldPassword"
+            placeholder="Old Password" required>
+        </div>
+      </div>
+      <hr />
+      <div class="form-group row">
+        <label for="newPassword" class="col-sm-4 col-form-label">New Password</label>
+        <div class="col-sm-7">
+          <input type="password" class="form-control" name="newPassword" [(ngModel)]="newPassword"
+            placeholder="New Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+            onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : ''); if(this.checkValidity()) form.confirmPassword.pattern = String(this.value).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');"
+            required>
+          <span class="validity"></span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="repeatNewPassword" class="col-sm-4 col-form-label">Confirm Password</label>
+        <div class="col-sm-7">
+          <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="confirmPassword"
+            placeholder="Confirm Password"
+            onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : '');" required>
+          <span class="validity"></span>
+        </div>
+      </div>
+      <span *ngIf="confirmPasswordError" class="Error">{{ confirmPasswordError }} </span>
+      <div class="form-group row">
+        <div class="col-sm-12" style="text-align:center">
+          <button [disabled]="!f.valid" (change)="updatePassword()" type="submit" class="btn btn-primary">Change
+            Password</button>
+        </div>
+      </div>
+    </form>
+    <div style="text-align: center;" *ngIf="updatePasswordStatus">
+      <small style="color: red;">{{updatePasswordStatus}}</small>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="cancel();modal.close('Close')">Close</button>
+  </div>
+</ng-template>

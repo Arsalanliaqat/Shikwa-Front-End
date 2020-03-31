@@ -25,6 +25,18 @@
           </div>
         </div>
         <div class="card-body">
+          <div *ngIf="this.searchMode" class="mb-5">
+            <form class="searchtag" (submit)="searchRecords()">
+              <div class="input-group no-border">
+                <span class="form-control redbox">{{searchField}}</span>
+                <div class="input-group-append">
+                  <div (click)="clearSearch()" class="input-group-text redbox">
+                    <i class="now-ui-icons ui-1_simple-remove redbox"></i>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
           <div class="table-responsive">
             <table class="table">
               <thead class=" text-primary">
