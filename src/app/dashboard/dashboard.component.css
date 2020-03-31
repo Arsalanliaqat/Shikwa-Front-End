@@ -75,6 +75,10 @@ image-cropper {
   padding: 20px;
 }
 
-.modal-title{
+.modal-title {
   margin-top: 10px;
+}
+
+.imageview {
+  margin: auto;
 }

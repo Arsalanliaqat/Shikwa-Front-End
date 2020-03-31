@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'angularx-social-login';
+import { error } from 'protractor';
 
 @Component({
   selector: 'app-profile',
@@ -17,6 +18,8 @@ export class ProfileComponent implements OnInit {
       'Content-Type': 'application/json',
     })
   };
+
+  updateStatus: string;
 
   data: JSON;
   salutation: string;
@@ -76,6 +79,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubmit(f: NgForm) {
+    this.updateStatus = 'Updating profile !';
     const profileData = {
       "firstName": this.firstname,
       "lastName": this.lastname,
@@ -92,6 +96,12 @@ export class ProfileComponent implements OnInit {
     }
     const profile = this.httpClient.post<any>(`${environment.apiUrl}/user`, profileData, this.httpOptions).toPromise();
     profile.then((data) => {
+      if(data.type === 'OK') {
+        this.updateStatus = 'Profile Updated Successfully !';
+      }
+      else if (data.type === 'ERROR') {
+        this.updateStatus = data.msg;
+      }
     }).catch((error) => {
       if (error.status === 403 || error.status === 0) {
         if (localStorage.getItem('loginWith') === 'Email') {

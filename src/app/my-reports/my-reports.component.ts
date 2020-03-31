@@ -33,6 +33,7 @@ export class MyReports implements OnInit, OnDestroy {
   products: JSON;
   swapProducts: JSON;
   searchMode: boolean = false;
+  searchKeyword: string;
 
   constructor(
     private modalService: NgbModal,
@@ -97,6 +98,7 @@ export class MyReports implements OnInit, OnDestroy {
   searchRecords() {
     const response = this.httpClient.get<any>(`${environment.apiUrl}/products?q=${this.searchField}&uid${localStorage.getItem('userId')}`, this.httpOptions).toPromise();
     response.then((data) => {
+      this.searchKeyword = this.searchField;
       this.searchMode = true;
       this.swapProducts = this.products;
       this.products = data;
@@ -126,5 +128,6 @@ export class MyReports implements OnInit, OnDestroy {
     this.swapProducts = null;
     this.searchField = '';
     this.searchMode = false;
+    this.searchKeyword = '';
   }
 }

@@ -335,8 +335,12 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="submitStatus">
-              <small style="color: red;">{{submitStatus}}</small>
+            <div class="row" *ngIf="submitStatus" style="color:red; text-align: center;">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <small>{{submitStatus}}</small>
+                </div>
+              </div>
             </div>
           </form>
         </div>

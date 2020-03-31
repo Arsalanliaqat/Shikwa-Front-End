@@ -45,8 +45,8 @@
               <div class="col-md-6 pl-md-1">
                 <div class="form-group">
                   <label for="email">Email address</label>
-                  <input name="email" id="email" type="email" class="form-control disabled" placeholder="Email" name="email"
-                    [(ngModel)]="email" readonly>
+                  <input name="email" id="email" type="email" class="form-control disabled" placeholder="Email"
+                    name="email" [(ngModel)]="email" readonly>
                 </div>
               </div>
             </div>
@@ -105,6 +105,13 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <button class="btn btn-primary btn-round btn-lg">Save</button>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="updateStatus" style="color:red; text-align: center;">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <small>{{updateStatus}}</small>
                 </div>
               </div>
             </div>
