@@ -4,7 +4,6 @@ import { environment } from '../../environments/environment';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'angularx-social-login';
-import { error } from 'protractor';
 
 @Component({
   selector: 'app-profile',

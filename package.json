@@ -55,6 +55,7 @@
     "popper.js": "1.14.6",
     "rellax": "1.7.2",
     "rxjs": "^6.3.3",
+    "string-similarity": "^4.0.1",
     "tesseract.js": "2.0.2",
     "tslib": "^1.9.3",
     "web-animations-js": "2.3.1",

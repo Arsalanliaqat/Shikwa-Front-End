@@ -1,4 +1,4 @@
-import { Component, ViewChild, TemplateRef, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, ViewChild, TemplateRef, Output, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { createWorker } from 'tesseract.js';
 import { ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
@@ -13,7 +13,7 @@ const Jimp = require('jimp');
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   @ViewChild('content', { read: TemplateRef }) content: TemplateRef<any>;
   @Output() loginAndReport = new EventEmitter();
@@ -36,11 +36,13 @@ export class DashboardComponent implements OnDestroy {
   public show = 'loading';
 
   public product = '';
-  public model = ''
   public method = '';
   public searchError: string;
+  public currentStatus: string;
+  public searchResult: JSON;
 
-  searchResult: JSON;
+  public formInputItem: string;
+  public formInputPlaceholder: string;
 
   public config: DropzoneConfigInterface = {
     clickable: true,
@@ -58,6 +60,11 @@ export class DashboardComponent implements OnDestroy {
     private router: Router,
     private httpClient: HttpClient
   ) { }
+
+  ngOnInit() {
+    this.formInputItem = 'Product Model';
+    this.formInputPlaceholder = 'Product Model i.e. XBHTR-123';
+  }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -148,12 +155,13 @@ export class DashboardComponent implements OnDestroy {
 
   public async scan() {
     this.show = 'loading';
+    this.open(this.content);
     await this.processImage();
     this.runOCR(this.croppedImage);
-    this.modalService.open(this.content);
   }
 
   public async processImage() {
+    this.currentStatus = 'Processing image to enhance OCR Result';
     const image = await Jimp.read(this.croppedImage);
     await image.greyscale();
     await image.contrast(0.3);
@@ -161,51 +169,46 @@ export class DashboardComponent implements OnDestroy {
   }
 
   public onUploadInit(args: any): void {
-    // console.log('onUploadInit:', args);
+    console.log('onUploadInit:', args);
   }
 
   public onUploadError(args: any): void {
-    // console.log('onUploadError:', args);
+    console.log('onUploadError:', args);
   }
 
   public onUploadSuccess(args: any): void {
-    // console.log('onUploadSuccess:', args[0]);
+    console.log('onUploadSuccess:', args[0]);
     this.selectedImage = args[0];
   }
 
   async runOCR(image: any) {
-    const worker = createWorker({
-      logger: m => {
-        // console.log(m)
-      },
-    });
+    this.currentStatus = 'Running OCR on the image';
+    const worker = createWorker({ logger: m => { /* console.log(m)*/ }, });
     await worker.load();
     await worker.loadLanguage('eng+deu');
     await worker.initialize('eng+deu');
-    console.log('OCR Applying');
     const { data: { text } } = await worker.recognize(image);
+    this.product = text;
     this.show = 'manual';
-    console.log(text.split(' '));
+    this.method = 'model';
     await worker.terminate();
   }
 
   public searchProduct() {
-    if (((this.method === 'model') && (this.model !== '')) || ((this.method === 'name') && (this.product !== ''))) {
+    if (this.product !== '') {
       this.searchError = 'Searching...';
-      const query = (this.method.toString() === 'model') ? this.model : this.product;
-      const result = this.httpClient.get<any>(`${environment.apiUrl}/verify?q=${query}&t=${this.method.toUpperCase()}`, this.httpOptions).toPromise();
+      const result = this.httpClient.get<any>(`${environment.apiUrl}/verify?q=${this.product}&t=${this.method.toUpperCase()}`, this.httpOptions).toPromise();
       result.then((data) => {
         this.searchResult = data;
         this.show = 'result';
         this.searchError = '';
-        if(data.length) {
+        if (data.length) {
+          (this.method === 'model') ? localStorage.setItem('model', `${this.product}`) : localStorage.setItem('product', `${this.product}`);
           this.method = 'model';
           this.product = '';
-          this.model = '';
         }
       }).catch((error) => {
         this.searchError = "Error getting response" + JSON.stringify(error);
-        // console.log("Error getting response" + JSON.stringify(error));
       });
     }
     else {
@@ -215,8 +218,6 @@ export class DashboardComponent implements OnDestroy {
 
   public report() {
     const loggedIn = localStorage.getItem('isLoggedIn');
-    localStorage.setItem('model', `${this.model}`);
-    localStorage.setItem('product', `${this.product}`);
     if (loggedIn === 'true') {
       void this.router.navigate(['/submit-reports']);
       this.modalReference.close();
@@ -228,6 +229,12 @@ export class DashboardComponent implements OnDestroy {
 
   goBackToSearch() {
     this.show = 'manual';
+    this.searchResult = null;
+  }
+
+  onMethodChange(value: string) {
+    this.formInputItem = (value === 'model') ? 'Product Model' : 'Product Name';
+    this.formInputPlaceholder = (value === 'model') ? 'Product Model i.e. XBHTR-123' : 'Product Name i.e. Apple Iphone 11 Pro Max';
   }
 
   ngOnDestroy() {
