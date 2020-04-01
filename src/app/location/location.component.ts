@@ -23,7 +23,7 @@ export class LocationComponent implements OnInit {
     var mapOptions = {
         zoom: 13,
         center: myLatlng,
-        scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
+        scrollwheel: false,
         styles: [{
             "featureType": "water",
             "stylers": [{
@@ -118,7 +118,6 @@ export class LocationComponent implements OnInit {
         title: "Hello World!"
     });
 
-    // To add the marker to the map, call setMap();
     marker.setMap(map);
   }
 

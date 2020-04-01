@@ -27,6 +27,7 @@ image-cropper {
 
 .details {
   margin-bottom: 0;
+  text-align: center;
 }
 
 .loader {
@@ -35,12 +36,11 @@ image-cropper {
   border-top: 8px solid red;
   width: 60px;
   height: 60px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
+  -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
   vertical-align: middle;
 }
 
-/* Safari */
 @-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
@@ -65,6 +65,7 @@ image-cropper {
 }
 
 .img-thumbnail {
+  padding: 0;
   border: none !important;
   max-height: 180px;
 }
@@ -81,4 +82,13 @@ image-cropper {
 
 .imageview {
   margin: auto;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.imageview:hover {
+  z-index: 99999999;
+  border: none !important;
+  -ms-transform: scale(3);
+  -webkit-transform: scale(3);
+  transform: scale(3);
 }

@@ -62,10 +62,11 @@ export class SubmitReport implements OnInit, OnChanges {
     formData.append("productBrand", this.brand);
     formData.append("productCategory", this.category);
     formData.append("productName", this.product);
+    formData.append("productModel", this.model);
     formData.append("countryOrigin", this.country);
     formData.append("cityOrigin", this.city);
     formData.append("riskType", this.risk);
-    formData.append("Description", this.description);
+    formData.append("description", this.description);
 
     const profile = this.httpClient.post<Data>(`${environment.apiUrl}/product`, formData, this.httpOptions).toPromise();
     profile.then((data) => {
@@ -75,8 +76,8 @@ export class SubmitReport implements OnInit, OnChanges {
         localStorage.removeItem('model');
         localStorage.removeItem('product');
         form.resetForm();
-        this.fileToUpload = null;
-        this.fileName = null;
+        this.fileToUpload = [];
+        this.fileName = [];
       }
       else {
         this.submitStatus = data.msg;

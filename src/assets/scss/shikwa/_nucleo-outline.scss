@@ -1,11 +1,3 @@
-/* --------------------------------
-
-Nucleo Outline Web Font - nucleoapp.com/
-License - nucleoapp.com/license/
-Created using IcoMoon - icomoon.io
-
--------------------------------- */
-
 @font-face {
   font-family: 'Nucleo Outline';
   src: url('../fonts/nucleo-outline.eot');
@@ -17,28 +9,15 @@ Created using IcoMoon - icomoon.io
   font-style: normal;
 }
 
-/*------------------------
-	base class definition
--------------------------*/
-
 .now-ui-icons {
   display: inline-block;
   font: normal normal normal 14px/1 'Nucleo Outline';
   font-size: inherit;
   speak: none;
   text-transform: none;
-  /* Better Font Rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-/*------------------------
-  change icon size
--------------------------*/
-
-/*----------------------------------
-  add a square/circle background
------------------------------------*/
 
 .now-ui-icons.circle {
   padding: 0.33333333em;
@@ -49,10 +28,6 @@ Created using IcoMoon - icomoon.io
 .now-ui-icons.circle {
   border-radius: 50%;
 }
-
-/*------------------------
-  list icons
--------------------------*/
 
 .nc-icon-ul {
   padding-left: 0;
@@ -75,10 +50,6 @@ Created using IcoMoon - icomoon.io
   top: -0.19047619em;
   left: -1.9047619em;
 }
-
-/*------------------------
-  spinning icons
--------------------------*/
 
 .now-ui-icons.spin {
   -webkit-animation: nc-icon-spin 2s infinite linear;
@@ -123,14 +94,6 @@ Created using IcoMoon - icomoon.io
     transform: rotate(360deg);
   }
 }
-
-/*------------------------
-  rotated/flipped icons
--------------------------*/
-
-/*------------------------
-	font icons
--------------------------*/
 
 .now-ui-icons.ui-1_check:before{
     content: "\ea22";
