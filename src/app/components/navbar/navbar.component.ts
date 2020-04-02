@@ -173,16 +173,18 @@ export class NavbarComponent implements OnInit {
 
   async logout() {
     if (localStorage.getItem('loginWith') === 'Email') {
-      void this.router.navigate(['/']);
+      void this.router.navigate(['welcome']);
       localStorage.removeItem('token');
       localStorage.setItem('isLoggedIn', 'false');
       localStorage.removeItem('loginWith');
+      localStorage.removeItem('userId');
     }
     else if ((localStorage.getItem('loginWith') === 'Social')) {
       this.authService.signOut();
       localStorage.removeItem('token');
       localStorage.setItem('isLoggedIn', 'false');
       localStorage.removeItem('loginWith');
+      localStorage.removeItem('userId');
     }
   }
 
