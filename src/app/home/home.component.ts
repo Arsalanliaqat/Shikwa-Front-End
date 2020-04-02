@@ -110,7 +110,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         localStorage.setItem('token', `${user.authToken}`);
       }
       if (!user) {
-        void this.router.navigate(['/']);
+        void this.router.navigate(['/welcome']);
       }
     });
   }
