@@ -196,11 +196,16 @@ export class NavbarComponent implements OnInit {
     if (this.newPassword !== this.confirmPassword) {
       this.confirmPasswordError = "Password do not match";
     } else {
-      const passwords = this.httpClient.post<any>(`${environment.apiUrl}/user/password`, newPasswordData, this.httpOptions).toPromise();
+      const passwords = this.httpClient.put<any>(`${environment.apiUrl}/user/changepassword`, newPasswordData, this.httpOptions).toPromise();
       passwords.then((data) => {
-        if (data.Type === 'OK') {
-          localStorage.setItem('token', data.token);
-          this.updatePasswordStatus = 'Password Changed Successfully';
+        if (data.type === 'OK') {
+          this.oldPassword = '';
+          this.newPassword = '';
+          this.confirmPassword = '';
+          this.updatePasswordStatus = 'Password Updated Successfully';
+        }
+        else {
+          this.updatePasswordStatus = data.msg;
         }
       }).catch((error) => {
         if (error.status === 403 || error.status === 0) {
