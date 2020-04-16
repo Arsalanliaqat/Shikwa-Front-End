@@ -93,7 +93,7 @@ export class ProfileComponent implements OnInit {
       "landlineNumber": this.landline,
       "description": this.description
     }
-    const profile = this.httpClient.post<any>(`${environment.apiUrl}/user`, profileData, this.httpOptions).toPromise();
+    const profile = this.httpClient.put<any>(`${environment.apiUrl}/user`, profileData, this.httpOptions).toPromise();
     profile.then((data) => {
       if(data.type === 'OK') {
         this.updateStatus = 'Profile Updated Successfully !';
